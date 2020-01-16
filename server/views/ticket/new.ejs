@@ -1,0 +1,34 @@
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-xs-12 col-md-8 col-md-offset-2">
+      <h2>Create New ticket</h2>
+        <div class="well">
+  <form action="/ticket/new" method="POST" enctype="multipart/form-data">
+    <div class="form-group control-label">
+      <label for="title">Title</label>
+      <input type="text" class="form-control" id="title" placeholder="Enter a title for your post" name="title">
+    </div>
+    <div class="form-group">
+      <label for="content">Issue</label>
+      <textarea class="form-control" rows="5" id="content" placeholder="Write your issue" name="content"></textarea>
+    </div>
+    <div class="form-group">
+      <label for="tags">Tags</label>
+      <select class="form-control" id="tags" placeholder="Choose your tag" name="tags">
+        <option>html</option>
+        <option>css</option>
+        <option>js</option>
+        <option>node</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <input type="file" name="photo">
+    </div>
+    <button type="submit" class="btn btn-success">Send Ticket</button>
+  </form>
+
+</div>
+</div>
+</div>

@@ -1,0 +1,43 @@
+
+  <div class="jumbotron">
+        <h1><%= title %></h1>
+        <p class="shadow">Join the web development community of <%= title %> to share your knowledge, learn or discuss!</p>
+        <p><a href="/auth/login" class="btn btn-lg btn-slack"><i class="fa fa-slack"></i> Login with Slack</a></p>
+      </div>
+</div>
+
+<div class="container-fluid">
+    <% if(tickets.length) { tickets.forEach((ticket) => { %>
+    <div class="row">
+        <div class="col-xs-12 col-md-8 col-md-offset-2">
+            <div class="panel panel-white post panel-shadow">
+                <div class="post-heading">
+                    <div class="pull-left image">
+                        <img src="<%= ticket.creatorId[0].imgAvatar %>" alt="<%= ticket.creatorId[0].imgAvatar %>" class="img-circle avatar" alt="user profile image">
+                    </div>
+                    <div class="pull-left meta">
+                        <div class="title h5">
+                            <a href="#"><b><%= ticket.creatorId[0].username %></b></a>
+                            posted a question
+                        </div>
+                        <h6 class="text-muted time">Created:<%= ticket.created_at %></h6>
+                    </div>
+                </div>
+                <div class="post-description">
+
+                  <h2><a href="/ticket/<%=ticket._id %>"><%= ticket.title %></a></h2>
+
+                    <p class="limit-words"><%= ticket.content %></p>
+
+                    <div class="stats">
+                        <span class="label lb-lg lb-<%= ticket.tags %>"><%= ticket.tags %></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+      <% }) }%>
+</div>
+
+
+</div>

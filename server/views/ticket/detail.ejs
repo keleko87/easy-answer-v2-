@@ -1,0 +1,76 @@
+
+  <span id="ticketId" style="visibility:hidden"><%= ticket._id %></span>
+  <div class="container">
+      <div class="row">
+          <div class="col-xs-12 col-md-10 col-md-offset-1">
+
+              <div class="panel panel-white post panel-shadow">
+                <h2 class="text-center details-title"><%= ticket.title %></h2>
+                <hr>
+                  <div class="post-heading">
+                      <div class="pull-left image">
+                          <img src="<%= ticket.creatorId[0].imgAvatar %>" alt="<%= ticket.creatorId[0].imgAvatar %>" class="img-circle avatar" alt="user profile image">
+                      </div>
+                      <div class="pull-left meta">
+                          <div class="title h5">
+                              <a href="#"><b><%= ticket.creatorId[0].username %></b></a>
+                              posted a question
+                          </div>
+
+                          <h6 class="text-muted time">Created:<%= ticket.created_at %></h6>
+                      </div>
+                  </div>
+            <div class="post-description">
+                <p><%= ticket.content %></p>
+
+                <% if (ticket.image === "nofile" || ticket.image === undefined ) { %>
+                  <p></p>
+
+                <% }else { %>
+
+                  <img src="/uploads/<%=ticket.image %>" class="img-responsive img-thumbnail imgdetails" >
+                <%} %>
+
+                <div class="stats">
+                  <span class="label lb-lgx lb-<%= ticket.tags %>"><%= ticket.tags %></span>
+
+              <%  if(user) { if(ticket.creatorId[0]._id == user._id) { %>
+
+                  <div class="floatright">
+                    <a href="/ticket/<%=ticket._id %>/edit" class="btn btn-md btn-warning">
+                        <i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit ticket
+                    </a>
+                    <a href="/ticket/<%=ticket._id %>/delete" class="btn btn-md btn-danger">
+                        <i class="fa fa-trash-o" aria-hidden="true"></i> Delete ticket
+                    </a>
+                  </div>
+              <% } } %>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+  <div id="comments-container">
+
+  </div>
+
+  <!-- TODO Form create new comment -->
+  <div class="row">
+    <div class="col-xs-12 col-md-10 col-md-offset-1">
+      <form id="comment-form" method="POST" action="/ticket/comment/<%=ticket._id %>" enctype="multipart/form-data">
+        <div class="form-group">
+          <label for="content">Add comment</label>
+          <textarea class="form-control" id="content" name="content" rows="5"></textarea>
+        </div>
+        <div class="form-group">
+          <label for="image">Add image (optional)</label>
+          <input type="file" class="form-control" id="image" name="photo-comment">
+        </div>
+        <button class="btn btn-default"> Add Comment </button>
+      </form>
+    </div>
+  </div>
+
+
+</div>
