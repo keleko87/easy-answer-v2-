@@ -1,25 +1,25 @@
 const express = require('express');
 const router = express.Router();
-const passport = require('passport');
 const multer = require('multer');
 const Ticket = require('../models/Ticket');
 const Comment = require('../models/Comment');
 const upload = multer ({dest: './public/uploads'});
-const {
-  ensureLoggedIn,
-  ensureLoggedOut
-} = require('connect-ensure-login');
+const { ensureLoggedIn } = require('connect-ensure-login');
 
 // READ
 router.get('/list', (req, res, next) => {
-  Ticket.find({}, (err, tickets) => {
+  Ticket.find({}, (err, data) => {
     if (err) {
       return next(err);
     } else {
-      res.render('index', {
-        title: "List of tickets",
-        tickets: tickets
-      });
+      const tickets = data.map((ticket) => {
+        const image = `${process.env.API}/uploads/${ticket.image}`;
+        const newTicket = Object.assign(ticket, { image });
+
+        return newTicket;
+      })
+
+      res.json(tickets);
     }
   });
 });

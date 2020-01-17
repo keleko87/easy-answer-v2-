@@ -32,7 +32,6 @@
     background-color:#5fa787;
 }
 
-.btn
 @media(max-width:768px){
     #login-dp{
         background-color: inherit;

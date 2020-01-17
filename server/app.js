@@ -1,12 +1,13 @@
 require('dotenv').config();
-const express      = require('express');
-const path         = require('path');
-const favicon      = require('serve-favicon');
-const logger       = require('morgan');
+const express = require('express');
+const path = require('path');
+const favicon = require('serve-favicon');
+const logger = require('morgan');
 const cookieParser = require('cookie-parser');
-const bodyParser   = require('body-parser');
-const layouts      = require('express-ejs-layouts');
-const mongoose     = require('mongoose');
+const bodyParser = require('body-parser');
+const layouts = require('express-ejs-layouts');
+const mongoose = require('mongoose');
+const cors = require("cors");
 const passport  = require('passport');
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
@@ -20,6 +21,18 @@ mongoose.connect(dburl).then( () => debug('DB Connected!'));
 
 const app = express();
 
+// CORS
+const whitelist = [ 'http://localhost:8080' ];
+const corsOptions = {
+  origin: function(origin, callback){
+      const originIsWhitelisted = whitelist.indexOf(origin) !== -1;
+      callback(null, originIsWhitelisted);
+  },
+  credentials: true
+};
+app.use(cors(corsOptions));
+
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -27,9 +40,10 @@ app.set('layout','layout/main');
 app.use(layouts);
 
 // uncomment after placing your favicon in /public
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+// app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
+
 //bodyparser.urlencoded changed to true accordin to slack passport example
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
@@ -57,6 +71,10 @@ const auth = require('./routes/auth');
 app.use('/', index);
 app.use('/ticket', ticket);
 app.use('/auth', auth);
+
+app.use((req, res, next) => {
+  res.sendfile(__dirname + '/public/index.html');
+});
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
