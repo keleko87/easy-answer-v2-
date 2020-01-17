@@ -1,13 +1,51 @@
-import { expect } from "chai";
-import { shallowMount } from "@vue/test-utils";
-import HelloWorld from "@/components/HelloWorld.vue";
+import { createLocalVue, mount } from "@vue/test-utils";
+import Vuex from "vuex";
+import VueRouter from "vue-router";
 
-describe("HelloWorld.vue", () => {
-  it("renders props.msg when passed", () => {
-    const msg = "new message";
-    const wrapper = shallowMount(HelloWorld, {
-      propsData: { msg }
+import Comment from "../../src/components/Comment.vue";
+import DateFilter from "../../src/common/date.filter";
+
+const localVue = createLocalVue();
+localVue.filter("date", DateFilter);
+localVue.use(Vuex);
+localVue.use(VueRouter);
+
+describe("Comment", () => {
+  it("should render correct contents", () => {
+    const router = new VueRouter({
+      routes: [
+        {
+          name: "profile",
+          path: "/profile",
+          component: null
+        }
+      ]
     });
-    expect(wrapper.text()).to.include(msg);
+    let store = new Vuex.Store({
+      getters: {
+        currentUser: () => ({
+          username: "user-3518518"
+        })
+      }
+    });
+
+    const wrapper = mount(Comment, {
+      localVue,
+      store,
+      router,
+      propsData: {
+        slug: "super-cool-comment-slug-1245781274",
+        comment: {
+          body: "body of comment",
+          author: {
+            image: "https://vuejs.org/images/logo.png",
+            username: "user-3518518"
+          },
+          createdAt: "",
+          id: 1245781274
+        }
+      }
+    });
+    expect(wrapper.isVueInstance()).toBeTruthy();
   });
 });

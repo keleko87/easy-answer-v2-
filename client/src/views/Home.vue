@@ -1,18 +1,18 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/mevn.jpg" />
-    <HelloWorld msg="PWA Boilerplate Template" />
+    <!-- <img alt="Vue logo" src="../assets/img/mevn.jpg" /> -->
+    <ticket-list :type="''"></ticket-list>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import HelloWorld from "@/components/HelloWorld.vue";
+import TicketList from '../components/TicketList';
 
 export default {
-  name: "home",
+  name: 'home',
   components: {
-    HelloWorld
+    TicketList,
   }
 };
 </script>
