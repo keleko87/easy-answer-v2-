@@ -6,12 +6,12 @@ const Comment = require('../models/Comment');
 const upload = multer ({dest: './public/uploads'});
 const { ensureLoggedIn } = require('connect-ensure-login');
 
-// READ
-router.get('/list', (req, res, next) => {
-  Ticket.find({}, (err, data) => {
-    if (err) {
-      return next(err);
-    } else {
+// GET TICKET LIST
+router.get('/list', (req, res) => {
+  Ticket.find({})
+    .populate('creatorId')
+    .exec()
+    .then((data) => {
       const tickets = data.map((ticket) => {
         const image = `${process.env.API}/uploads/${ticket.image}`;
         const newTicket = Object.assign(ticket, { image });
@@ -20,8 +20,8 @@ router.get('/list', (req, res, next) => {
       })
 
       res.json(tickets);
-    }
-  });
+    })
+    .catch( err => console.log(err));
 });
 
 //  Show template form adding

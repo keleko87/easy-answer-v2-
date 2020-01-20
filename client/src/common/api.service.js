@@ -63,3 +63,20 @@ export const TicketsService = {
   }
 
 };
+
+export const AuthService = {
+  resource: '/auth',
+
+  login() {
+    return ApiService.get(this.resource, '/login');
+  },
+
+  getUserProfile() {
+    return ApiService.get(this.resource, '/profile');
+  },
+
+  logout() {
+    return ApiService.get(this.resource, '/logout');
+  }
+};
+

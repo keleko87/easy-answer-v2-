@@ -1,5 +1,5 @@
 <template>
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
    <div class="container">
       <router-link class="navbar-brand" :to="{ name: 'home' }">
         Easy Answer 2
@@ -27,16 +27,6 @@
         </li>
       </ul>
       <ul v-else class="nav navbar-nav pull-xs-right">
-        <li class="nav-item">
-          <router-link
-            class="nav-link"
-            active-class="active"
-            exact
-            :to="{ name: 'home' }"
-          >
-            Home
-          </router-link>
-        </li>
         <li class="nav-item">
           <router-link
             class="nav-link"

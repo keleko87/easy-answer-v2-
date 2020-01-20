@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="ticket-container">
     <div v-if="isLoading" class="ticket-preview">Loading tickets...</div>
     <div v-else>
       <div v-if="tickets.length === 0" class="ticket-preview">
@@ -7,68 +7,41 @@
       </div>
     </div>
 
-    <!-- <div class="container">
-      <div class="row" v-for="(ticket) in tickets" :ticket="ticket" :key="ticket._id">
-        <div class="col-md-2"></div>
-        <div class="card col-md-8">
-          <div class="card-body">
-            <h5 class="card-title">{{ ticket.title }}</h5>
-            <p class="card-text">{{ ticket.description }}</p>
-          </div>
-          <template v-if="ticket.image !== 'nofile'">
-            <img class="card-img-top" :src="ticket.image" alt="Card image cap">
-          </template>
-          <ul class="list-group list-group-flush">
-            <li class="list-group-item">Cras justo odio</li>
-            <li class="list-group-item">Dapibus ac facilisis in</li>
-            <li class="list-group-item">Vestibulum at eros</li>
-          </ul>
-          <div class="card-body">
-            <a href="#" class="card-link">Card link</a>
-            <a href="#" class="card-link">Another link</a>
-          </div>
-        </div>
-      
-      </div>
-    </div> -->
-
-    <div class="container-fluid">
-
+    <div class="container">
       <template v-if="tickets.length">
-        <div class="row" v-for="ticket in tickets" :ticket="ticket" :key="ticket._id">         
- 
-          <div class="col-xs-12 col-md-8 col-md-offset-2">
-            <div class="panel panel-white post panel-shadow">
-                <div class="post-heading">
-                    <div class="pull-left image">
-                        <img :src="ticket.creatorId[0].imgAvatar" 
-                             class="img-circle avatar" alt="user profile image">
-                    </div>
-                    <div class="pull-left meta">
-                        <div class="title h5">
-                            <a href="#"><b>{{ ticket.creatorId[0].username }}</b></a>
-                            posted a question
-                        </div>
-                        <h6 class="text-muted time">Created:{{ ticket.created_at }}</h6>
-                    </div>
-                </div>
-                <div class="post-description">
-
-                  <h2>
-                    <router-link to="`/ticket/${ticket._id}`">{{ ticket.title }}</router-link>
-                  </h2>
-
-                    <p class="limit-words">{{ ticket.content }}</p>
-
-                    <div class="stats">
-                        <span class="label lb-lg">{{ ticket.tags }}</span>
-                    </div>
-                </div>
+        <div class="card" v-for="ticket in tickets" :ticket="ticket" :key="ticket._id">
+        
+          <div class="card-body">
+            <div class="message">
+              <!-- <router-link :to="{ name: '/ticket', params: { ticketId: ticket._id }" class="dropdown-item">Home</router-link>   -->
+              <h5 class="card-title">{{ ticket.title }}</h5>
+              <p class="card-text">{{ ticket.content }}</p>
+              <span class="ticket-label">{{ ticket.tags }}</span>
             </div>
+            <div class="actions">
+              <a href="#" class="card-link">Like</a>
+              <a href="#" class="card-link">Reply</a>
+              <a href="#" class="card-link">Share</a>
+            </div>
+          </div>
+
+           <div class="card-footer">
+            <div class="row">
+              <div class="col-auto">
+                <img :src="ticket.creatorId[0].imgAvatar" class="image-avatar float-left rounded-circle">
+              </div>
+              <div class="col-auto p-0">
+                <div class="">
+                  <span><b>{{ ticket.creatorId[0].username }} </b>posted a question</span>
+                </div>
+                <small class="text-muted time">asked:{{ ticket.created_at | date }}</small>
+              </div>
+            </div>
+          </div>         
         </div>
+      </template>
     </div>
-  </template>
-</div>
+
   </div>
 </template>
 
@@ -109,3 +82,29 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+  .card {
+    text-align: left;
+    margin-bottom: 20px;
+  }
+  .card .card-body .message {
+  }
+
+  .card .card-body .actions {
+    margin-top: 5px;
+  }
+
+  .image-avatar {
+    width: 41px;
+    height: 41px;
+  }
+
+  .ticket-label {
+    padding: 5px;
+    color: #39739d;
+    background-color: #e1ecf4;
+    border-color: #e1ecf4;
+  }
+
+</style>

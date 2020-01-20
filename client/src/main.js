@@ -5,8 +5,10 @@ import store from './store';
 import './registerServiceWorker';
 
 import ApiService from './common/api.service';
+import DateFilter from "./common/date.filter";
 
 Vue.config.productionTip = false;
+Vue.filter("date", DateFilter);
 
 ApiService.init();
 

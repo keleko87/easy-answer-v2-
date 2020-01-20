@@ -13,11 +13,6 @@ export default new Router({
       component: () => import('../views/Home')
     },
     {
-      path: '/ticket/new',
-      name: 'new',
-      component: () => import('../views/Ticket')
-    },
-    {
       path: '/auth/login',
       name: 'login',
       component: () => import('../views/About')
@@ -31,6 +26,21 @@ export default new Router({
       path: '/auth/profile',
       name: 'profile',
       component: () => import('../views/About')
+    },
+    {
+      path: '/ticket/new',
+      name: 'new',
+      component: () => import('../views/Ticket')
+    },
+    {
+      path: '/ticket/:id/edit',
+      name: 'new',
+      component: () => import('../views/Ticket')
+    },
+    {
+      path: '/ticket/:id',
+      name: 'new',
+      component: () => import('../views/TicketDetail')
     },
     {
       path: '/about',
