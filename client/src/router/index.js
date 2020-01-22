@@ -12,20 +12,20 @@ export default new Router({
       name: 'home',
       component: () => import('../views/Home')
     },
+    // {
+    //   path: '/auth/login',
+    //   name: 'login',
+    //   component: () => import('../views/Login')
+    // },
     {
-      path: '/auth/login',
-      name: 'login',
-      component: () => import('../views/About')
-    },
-    {
-      path: '/auth/logout',
+      path: '/logout',
       name: 'login',
       component: () => import('../views/About')
     },
     {
       path: '/auth/profile',
       name: 'profile',
-      component: () => import('../views/About')
+      component: () => import('../views/Profile')
     },
     {
       path: '/ticket/new',
@@ -39,7 +39,7 @@ export default new Router({
     },
     {
       path: '/ticket/:id',
-      name: 'new',
+      name: 'ticket-detail',
       component: () => import('../views/TicketDetail')
     },
     {

@@ -60,6 +60,11 @@ export const TicketsService = {
 
   getTicket(id) {
     return ApiService.get(this.resource, id);
+  },
+
+  saveTicket(ticket) {
+    console.log('save ticket', ticket);
+    return Vue.axios.post(`${this.resource}/new`, ticket);
   }
 
 };
@@ -68,15 +73,15 @@ export const AuthService = {
   resource: '/auth',
 
   login() {
-    return ApiService.get(this.resource, '/login');
+    return ApiService.get(this.resource, 'login');
   },
 
   getUserProfile() {
-    return ApiService.get(this.resource, '/profile');
+    return ApiService.get(this.resource, 'profile');
   },
 
   logout() {
-    return ApiService.get(this.resource, '/logout');
+    return ApiService.get(this.resource, 'logout');
   }
 };
 

@@ -9,29 +9,30 @@ const { ensureLoggedIn } = require('connect-ensure-login');
 // GET TICKET LIST
 router.get('/list', (req, res) => {
   Ticket.find({})
-    .populate('creatorId')
-    .exec()
-    .then((data) => {
-      const tickets = data.map((ticket) => {
-        const image = `${process.env.API}/uploads/${ticket.image}`;
-        const newTicket = Object.assign(ticket, { image });
-
-        return newTicket;
-      })
-
-      res.json(tickets);
+  .populate('creatorId')
+  .exec()
+  .then((data) => {
+    const tickets = data.map((ticket) => {
+      const image = `${process.env.API}/uploads/${ticket.image}`;
+      const newTicket = Object.assign(ticket, { image });
+      
+      return newTicket;
     })
-    .catch( err => console.log(err));
+    
+    res.json(tickets);
+  })
+  .catch( err => console.log(err));
 });
 
 //  Show template form adding
-router.get('/new', ensureLoggedIn('/auth/login'), (req, res, next) => {
+router.get('/new', (req, res, next) => {
   res.render('ticket/new');
 });
 
 //  Adding new Ticket
-router.post('/new', upload.single('photo'), (req, res, next) => {
-
+router.post('/new', upload.single('photo'), (req, res) => {
+  console.log(req.user, '=====================================',req.file);
+  console.log('req boooooooooooooooooooddddddddddddddd',req.body);
   let image;
   if (req.file) image = req.file.filename;
   else image = 'nofile';
@@ -41,10 +42,15 @@ router.post('/new', upload.single('photo'), (req, res, next) => {
     content: req.body.content,
     tags: req.body.tags,
     image: image,
-    creatorId: req.user._id // IMPORTANT USER ID LOGGED IN
+    creatorId: '5e26f691358276336845a086' // IMPORTANT USER ID LOGGED IN
   });
   console.log(ticket);
   ticket.save((err, ticket) => {
+    if (err) {
+      console.log('errorrrrr', err);
+      if (statusCode >= 100 && statusCode < 600) res.status(statusCode);
+      else res.status(500);
+    }
     res.redirect('/');
   });
 });

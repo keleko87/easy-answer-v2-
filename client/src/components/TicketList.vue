@@ -13,10 +13,14 @@
         
           <div class="card-body">
             <div class="message">
-              <!-- <router-link :to="{ name: '/ticket', params: { ticketId: ticket._id }" class="dropdown-item">Home</router-link>   -->
+               <h5 class="card-title">
+                 <router-link :to="{ name: 'ticket-detail', params: { id: ticket._id }}" class="">
+                    {{ ticket.title }}
+                  </router-link>
+                </h5>
               <h5 class="card-title">{{ ticket.title }}</h5>
               <p class="card-text">{{ ticket.content }}</p>
-              <span class="ticket-label">{{ ticket.tags }}</span>
+              <!-- <img :src="ticket.image" alt="ticket image"> -->
             </div>
             <div class="actions">
               <a href="#" class="card-link">Like</a>
@@ -47,7 +51,7 @@
 
 <script>
 import { mapGetters } from "vuex";
-import { FETCH_TICKETS } from "../store/actions.type";
+import { GET_TICKETS } from "../store/actions.type";
 
 export default {
   name: "ticket-list",
@@ -62,7 +66,8 @@ export default {
   },
   data() {
     return {
-      currentPage: 1
+      currentPage: 1,
+      hostURL: process.env.VUE_APP_API
     };
   },
   computed: {
@@ -75,8 +80,8 @@ export default {
 
   methods: {
     fetchtickets() {
-      this.$store.dispatch(FETCH_TICKETS);
-    }
+      this.$store.dispatch(GET_TICKETS);
+    },
 
     // ADD PAGINATION 
   }

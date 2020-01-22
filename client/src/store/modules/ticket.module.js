@@ -1,50 +1,34 @@
 import { TicketsService } from '../../common/api.service';
-import { FETCH_TICKETS } from '../actions.type';
-import { FETCH_START, FETCH_END, SET_TICKETS, SET_TICKETS_COUNT } from '../mutations.type';
+import { SAVE_TICKET } from '../actions.type';
+import { ADD_NEW_TICKET, SET_TICKETS_COUNT } from '../mutations.type';
 
 const state = {
+  id: '',
+  title: '',
+  content: '',
   tags: [],
-  tickets: [],
-  isLoading: true,
-  ticketsCount: 0
+  file: {},
+  comments: [],
+  creatorId: '',
 };
 
 const getters = {
-  ticketsCount(state) {
-    return state.ticketsCount;
-  },
-
-  tickets(state) {
-    return state.tickets;
-  },
-
-  isLoading(state) {
-    return state.isLoading;
-  }
 };
 
 const actions = {
-  async [FETCH_TICKETS](context) {
-    context.commit(FETCH_START);
-    const { data } = await TicketsService.getTickets();
-    context.commit(FETCH_END);
-    context.commit(SET_TICKETS, data);
-    context.commit(SET_TICKETS_COUNT, data.length);
+  async [SAVE_TICKET](context, newTicket) {
+    const response = await TicketsService.saveTicket(newTicket);
+    
+    if (response) {
+      context.commit(ADD_NEW_TICKET, newTicket);
+      context.commit(SET_TICKETS_COUNT);
+    }
   }
 };
 
 const mutations = {
-  [FETCH_START](state) {
-    state.isLoading = true;
-  },
-  [FETCH_END](state) {
-    state.isLoading = false;
-  },
-  [SET_TICKETS](state, tickets) {
-    state.tickets = tickets;
-  },
-  [SET_TICKETS_COUNT](state, tickets) {
-    state.ticketsCount = tickets.length;
+  [ADD_NEW_TICKET](state, newTicket) {
+    state.tickets.push(newTicket);
   }
 };
 

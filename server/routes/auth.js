@@ -7,11 +7,27 @@ const { ensureLoggedIn, ensureLoggedOut } = require('connect-ensure-login');
 router.get('/login', ensureLoggedOut(), passport.authenticate('slack'));
 
 // OAuth callback url
-router.get('/slack/callback', ensureLoggedOut(),
+router.get('/slack/callback', ensureLoggedOut(), 
   passport.authenticate('slack', {
     successRedirect: '/auth/profile',
     failureRedirect: '/auth/error-login'
-  }));
+}));
+
+// (req, res, next) => {
+
+//   passport.authenticate('slack', (err, user, info) => {
+//     if (err) { return next(err); }
+
+//     if (!user) { return res.redirect('/login'); }
+
+//     req.logIn(user, (err) => {
+//       if (err) { return next(err); }
+//       console.log('useeesssssssssssssssssssssssssss', user);
+//       return res.json(user);
+//     });
+
+//   })(req, res, next);
+// });
 
 router.get('/error-login', (req, res) => {
   res.render('auth/error-login', {
@@ -22,13 +38,13 @@ router.get('/error-login', (req, res) => {
 router.get('/profile', ensureLoggedIn('/auth/login'), (req, res) => {
   let user;
   if (req.user) user = req.user;
-  console.log(res);
+  console.log('/profile', res);
   res.json(user);
 });
 
-router.get('/logout', function(req, res) {
+router.get('/logout', (req, res) => {
   req.logout();
-  res.redirect('/');
+  res.status(200).json({ message: 'Logout success' });
 });
 
 

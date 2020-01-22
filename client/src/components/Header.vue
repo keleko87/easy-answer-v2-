@@ -6,31 +6,26 @@
       </router-link>
       <ul v-if="!isAuthenticated" class="nav navbar-nav pull-xs-right">
         <li class="nav-item">
-          <router-link
-            class="nav-link"
-            active-class="active"
-            exact
-            :to="{ name: 'home' }"
-          >
-            Home
-          </router-link>
+          <button @click="login" class="btn btn-lg btn-slack"><i class="fa fa-slack"></i>Login Slack</button>
+
+          <a href="/auth/login" class="btn btn-primary">Login</a>
         </li>
         <li class="nav-item">
-          <router-link
+          <!-- <router-link
             class="nav-link"
             active-class="active"
             exact
-            :to="{ name: 'login' }"
+            :to="{ name: 'logout' }"
           >
             <i class="ion-compose"></i>Sign in
-          </router-link>
+          </router-link> -->
+
         </li>
       </ul>
       <ul v-else class="nav navbar-nav pull-xs-right">
         <li class="nav-item">
           <router-link
             class="nav-link"
-            active-class="active"
             :to="{ name: 'new' }"
           >
             <i class="ion-compose"></i>&nbsp;New Ticket
@@ -39,7 +34,6 @@
         <li class="nav-item">
           <router-link
             class="nav-link"
-            active-class="active"
             exact
             :to="{ name: 'settings' }"
           >
@@ -49,7 +43,6 @@
         <li class="nav-item" v-if="currentUser.username">
           <router-link
             class="nav-link"
-            active-class="active"
             exact
             :to="{
               name: 'profile',
@@ -59,6 +52,9 @@
             {{ currentUser.username }}
           </router-link>
         </li>
+        <li class="nav-item">
+          <button @click="logout" class="btn btn-lg btn-slack"><i class="fa fa-slack"></i>Logout</button>
+        </li>
       </ul>
     </div>
 </nav>
@@ -66,11 +62,22 @@
 
 <script>
 import { mapGetters } from "vuex";
+import { LOGIN, LOGOUT } from '../store/actions.type';
 
 export default {
   name: "Header",
   computed: {
     ...mapGetters(["currentUser", "isAuthenticated"])
+  },
+
+  methods: {
+    login() {
+      this.$store.dispatch(LOGIN);
+    },
+
+    logout() {
+      this.$store.dispatch(LOGOUT);
+    }
   }
 };
 </script>

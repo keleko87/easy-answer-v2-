@@ -16,8 +16,12 @@ const debug = require('debug')(`easy-answer:${path.basename(__filename).split('.
 
 // Connect to mongo database
 const dburl = process.env.MONGO_DB_URL;
+console.log(`easy-answer:${path.basename(__filename).split('.')[0]}`,'connecting....', dburl);
 debug(`Connecting to ${dburl}`);
-mongoose.connect(dburl).then( () => debug('DB Connected!'));
+mongoose.connect(dburl).then( () => { 
+  'DB Connected', dburl; 
+  debug('DB Connected!');
+});
 
 const app = express();
 
@@ -30,8 +34,14 @@ const corsOptions = {
   },
   credentials: true
 };
-app.use(cors(corsOptions));
+app.use(cors());
+app.options('*', cors());
 
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", '*'); // update to match the domain you will make the request from
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -44,8 +54,9 @@ app.use(layouts);
 app.use(logger('dev'));
 app.use(bodyParser.json());
 
-//bodyparser.urlencoded changed to true accordin to slack passport example
+//bodyparser.urlencoded changed to true according to slack passport example
 app.use(bodyParser.urlencoded({ extended: true }));
+
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
