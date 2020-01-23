@@ -6,27 +6,37 @@
       <h4>Join the web development community of Easy Answer to share your knowledge, learn or discuss!</h4>
     </div>
 
-    <div class="container">
-      <div class="row">
-        <div class="col-12">
-          <h2> All Questions</h2>
-        </div>
-        <div class="col-6">
-          <h5>{{ tickets.length }} questions</h5>
-        </div>
-        <div class="col-6 form-group">
-          <label for="search" class="px-3">Filter questions</label>
-          <input name="search" type="text" class="w-50" placeholder="Search">
+    <div class="jumbotron-filter">
+      <div class="container">
+        <div class="row">
+          <div class="col-1"></div>
+          <div class="col-10">
+            <div class="d-flex flex-row justify-content-between">
+              <div>
+                <h2> All Questions</h2>
+                <h5>{{ tickets.length }} questions</h5>
+              </div>
+              <div class="search form-group">
+                <label for="search" class="px-3">Filter questions</label>
+                <input name="search" type="text" class="w-50" placeholder="Search">
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
+    </div>
+    
+    <hr>
 
+    <div class="container mt-4">
       <div class="row">
         <div class="col-12">
           <ticket-list :type="'all'"></ticket-list>
         </div>
       </div>
     </div>
-   
+    
   </div>
 </template>
 
@@ -53,6 +63,9 @@ export default {
 </script>
 
 <style scoped>
+  .search {
+    align-self: flex-end;
+  }
   .jumbotron {
     text-align: center;
     color: #FFF;

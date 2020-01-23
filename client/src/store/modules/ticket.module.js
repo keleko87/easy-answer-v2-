@@ -1,6 +1,6 @@
 import { TicketsService } from '../../common/api.service';
 import { SAVE_TICKET } from '../actions.type';
-import { ADD_NEW_TICKET, SET_TICKETS_COUNT } from '../mutations.type';
+import { SET_TICKET } from '../mutations.type';
 
 const state = {
   id: '',
@@ -27,24 +27,19 @@ const actions = {
     }
 
     try {
-      const response = await TicketsService.saveTicket(formData);
-      if (response) {
-        console.log('NOT WORKING');
-        context.commit(ADD_NEW_TICKET, form);
-        context.commit(SET_TICKETS_COUNT);
-      }
+      await TicketsService.saveTicket(formData);
+      context.commit(SET_TICKET, form);
     }
     catch(err) {
-      console.log('error', err);
+     window.console.log('error', err);
+     return err;
     }
   }
 };
 
 const mutations = {
-  // NOT WORKING
-  [ADD_NEW_TICKET](state, newTicket) {
-    console.log('stateee', state);
-    state.tickets.push(newTicket);
+  [SET_TICKET](state, newTicket) {
+    state.ticket = newTicket;
   }
 };
 

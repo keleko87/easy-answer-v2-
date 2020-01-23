@@ -8,38 +8,57 @@
     </div>
 
     <div class="row" v-if="tickets.length">
-      <div class="col-12">
+      <div class="col-md-1"></div>
+      <div class="col-md-10">
         <div class="card" v-for="ticket in tickets" :ticket="ticket" :key="ticket._id">
         
           <div class="card-body">
-            <div class="message">
-              <h5 class="card-title">
-                <router-link :to="{ name: 'ticket-detail', params: { id: ticket._id }}" class="">
+            <div class="d-flex justify-content-between ">
+              <div class="message">
+                <h5 class="card-title">
+                  <router-link :to="{ name: 'ticket-detail', params: { id: ticket._id }}" class="">
                     {{ ticket.title }}
                   </router-link>
                 </h5>
-              <div class="content card-text">
-                {{ ticket.content }}
+                <div class="content card-text">
+                  {{ ticket.content }}
+                </div>
               </div>
+
+              <div class="ticket-comments pt-1">
+                <div class="comments text-center">23</div> 
+                <small>answers</small>
+              </div> 
             </div>
+          
             <div class="actions">
-              <a href="#" class="card-link">Like</a>
-              <a href="#" class="card-link">Reply</a>
-              <a href="#" class="card-link">Share</a>
+              <div>
+                <a href="#" class="card-link">Like</a>
+                <a href="#" class="card-link">Reply</a>
+                <a href="#" class="card-link">Share</a>
+              </div>
+              <div class="tag">
+                <span class="tag-text">
+                  {{ ticket.tags}}
+                </span>
+              </div>
             </div>
           </div>
 
           <div class="card-footer">
             <div class="row">
+              
               <div class="col-auto">
                 <img :src="ticket.creatorId[0].imgAvatar" class="image-avatar float-left rounded-circle">
               </div>
+
               <div class="col-auto p-0">
                 <div class="">
                   <span><b>{{ ticket.creatorId[0].username }} </b>posted a question</span>
                 </div>
                 <small class="text-muted time">asked:{{ ticket.created_at | date }}</small>
               </div>
+
             </div>
           </div>         
         </div>
@@ -113,9 +132,7 @@ export default {
   methods: {
     fetchtickets() {
       this.$store.dispatch(GET_TICKETS);
-    },
-
-    // ADD PAGINATION 
+    }
   }
 };
 </script>
@@ -135,18 +152,43 @@ export default {
     height: 41px;
   }
 
-  .ticket-label {
-    padding: 5px;
-    color: #39739d;
-    background-color: #e1ecf4;
-    border-color: #e1ecf4;
+  .tag-text {
+    color: #72399d;
+    background-color: #ede1f4;
+    border-color: #ffffff;
+    /* color: #ffffff;
+    background-color: #593196;
+    border-color: #593196; */
+    border-radius: 3px;
+    padding: 5px 10px;
+    font-size: 12px;
   }
 
   .content {
     overflow: hidden;
     text-overflow: ellipsis;
-    height: 35px;
-    white-space: nowrap;
-    width: 95%;
+    height: 45px;
+    /* white-space: nowrap; */
+    padding-right: 25px;
+  }
+
+  .actions {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .ticket-comments {
+    background-color: #5eba7d;
+    border-radius: 3px;
+    color: #FFF;
+    height: 55px;
+    padding: 0 10px;
+  }
+
+  .ticket-comments .comments {
+    font-size: 18px;
+  }
+  .ticket-comments small {
+    vertical-align: super;
   }
 </style>

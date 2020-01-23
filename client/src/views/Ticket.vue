@@ -59,7 +59,7 @@
 </template>
 
 <script>
-import { required, minLength } from 'vuelidate/lib/validators';
+import { required, minLength, maxLength } from 'vuelidate/lib/validators';
 import { SAVE_TICKET } from '../store/actions.type';
 
 export default {
@@ -82,7 +82,7 @@ export default {
 
     onSubmit() {
       this.$store.dispatch(SAVE_TICKET, this.form);
-      console.log('this.store', this.$store);
+      this.$router.push({ name: "home" });
     }
   },
 
@@ -94,7 +94,8 @@ export default {
         },
         content: {
           required,
-          minLength: minLength(10)
+          minLength: minLength(10),
+          maxLength: maxLength(500)
         },
         tags: {
           required
