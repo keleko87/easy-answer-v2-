@@ -43,8 +43,8 @@ const mutations = {
   [SET_TICKETS](state, tickets) {
     state.tickets = tickets;
   },
-  [SET_TICKETS_COUNT](state, tickets) {
-    state.ticketsCount = tickets.length;
+  [SET_TICKETS_COUNT](state, ticketsLength) {
+    state.ticketsCount = ticketsLength;
   }
 };
 

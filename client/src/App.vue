@@ -6,6 +6,7 @@
 </template>
 
 <script>
+import 'bootstrap-vue/dist/bootstrap-vue.css';
 import Header from './components/Header';
 // import Footer from './components/Footer';
 

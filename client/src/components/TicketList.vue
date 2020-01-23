@@ -7,20 +7,20 @@
       </div>
     </div>
 
-    <div class="container">
-      <template v-if="tickets.length">
+    <div class="row" v-if="tickets.length">
+      <div class="col-12">
         <div class="card" v-for="ticket in tickets" :ticket="ticket" :key="ticket._id">
         
           <div class="card-body">
             <div class="message">
-               <h5 class="card-title">
-                 <router-link :to="{ name: 'ticket-detail', params: { id: ticket._id }}" class="">
+              <h5 class="card-title">
+                <router-link :to="{ name: 'ticket-detail', params: { id: ticket._id }}" class="">
                     {{ ticket.title }}
                   </router-link>
                 </h5>
-              <h5 class="card-title">{{ ticket.title }}</h5>
-              <p class="card-text">{{ ticket.content }}</p>
-              <!-- <img :src="ticket.image" alt="ticket image"> -->
+              <div class="content card-text">
+                {{ ticket.content }}
+              </div>
             </div>
             <div class="actions">
               <a href="#" class="card-link">Like</a>
@@ -29,7 +29,7 @@
             </div>
           </div>
 
-           <div class="card-footer">
+          <div class="card-footer">
             <div class="row">
               <div class="col-auto">
                 <img :src="ticket.creatorId[0].imgAvatar" class="image-avatar float-left rounded-circle">
@@ -43,7 +43,18 @@
             </div>
           </div>         
         </div>
-      </template>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="mx-auto">
+        <b-pagination
+          v-model="pagination.currentPage"
+          :total-rows="ticketsCount"
+          :per-page="pagination.perPage"
+          aria-controls="ticket-list"
+        ></b-pagination>
+      </div>
     </div>
 
   </div>
@@ -52,11 +63,15 @@
 <script>
 import { mapGetters } from "vuex";
 import { GET_TICKETS } from "../store/actions.type";
+import { BPagination } from 'bootstrap-vue';
 
 export default {
   name: "ticket-list",
+
   components: {
+    BPagination
   },
+
   props: {
     type: {
       type: String,
@@ -64,14 +79,31 @@ export default {
       default: "all"
     }
   },
+
   data() {
     return {
-      currentPage: 1,
+      pagination: {
+        currentPage: 1,
+        rows: 4,
+        perPage: 2
+      },
       hostURL: process.env.VUE_APP_API
     };
   },
+
   computed: {
-    ...mapGetters(["ticketsCount", "isLoading", "tickets"])
+    ...mapGetters(["ticketsCount", "isLoading"]),
+    tickets() {
+      const items = this.$store.getters.tickets;
+      // Return just page of items needed
+      return items.slice(
+        (this.pagination.currentPage - 1) * this.pagination.perPage,
+        this.pagination.currentPage * this.pagination.perPage
+      )
+    },
+    totalRows () {
+      return this.$store.getters.loadedLists.length
+    }
   },
 
   mounted() {
@@ -93,8 +125,6 @@ export default {
     text-align: left;
     margin-bottom: 20px;
   }
-  .card .card-body .message {
-  }
 
   .card .card-body .actions {
     margin-top: 5px;
@@ -112,4 +142,11 @@ export default {
     border-color: #e1ecf4;
   }
 
+  .content {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    height: 35px;
+    white-space: nowrap;
+    width: 95%;
+  }
 </style>

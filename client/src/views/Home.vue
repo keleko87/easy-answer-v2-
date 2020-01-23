@@ -1,18 +1,37 @@
 <template>
   <div class="home">
+
     <div class="jumbotron">
       <h1>Easy Answer 2</h1>
       <h4>Join the web development community of Easy Answer to share your knowledge, learn or discuss!</h4>
     </div>
-    <div>
-      <ticket-list :type="''"></ticket-list>
+
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <h2> All Questions</h2>
+        </div>
+        <div class="col-6">
+          <h5>{{ tickets.length }} questions</h5>
+        </div>
+        <div class="col-6 form-group">
+          <label for="search" class="px-3">Filter questions</label>
+          <input name="search" type="text" class="w-50" placeholder="Search">
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-12">
+          <ticket-list :type="'all'"></ticket-list>
+        </div>
+      </div>
     </div>
+   
   </div>
 </template>
 
 <script>
 import { mapGetters } from "vuex";
-// import { FETCH_TICKETS } from "../store/actions.type";
 import TicketList from '../components/TicketList';
 
 export default {
@@ -24,17 +43,18 @@ export default {
   },
 
   components: {
-    TicketList,
+    TicketList
   },
 
     computed: {
-    ...mapGetters(["currentUser", "isAuthenticated"])
-  },
+    ...mapGetters(["currentUser", "isAuthenticated", "tickets"])
+  }
 };
 </script>
 
 <style scoped>
   .jumbotron {
+    text-align: center;
     color: #FFF;
     font-weight: bold;
     background-size: cover;

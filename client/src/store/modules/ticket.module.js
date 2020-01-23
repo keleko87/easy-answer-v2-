@@ -16,18 +16,34 @@ const getters = {
 };
 
 const actions = {
-  async [SAVE_TICKET](context, newTicket) {
-    const response = await TicketsService.saveTicket(newTicket);
-    
-    if (response) {
-      context.commit(ADD_NEW_TICKET, newTicket);
-      context.commit(SET_TICKETS_COUNT);
+  async [SAVE_TICKET](context, form) {
+
+    const formData = new FormData();
+    formData.append('title', form.title);
+    formData.append('content', form.content);
+    formData.append('tags', form.tags);
+    if (form.photo) {
+      formData.append('photo', form.photo);
+    }
+
+    try {
+      const response = await TicketsService.saveTicket(formData);
+      if (response) {
+        console.log('NOT WORKING');
+        context.commit(ADD_NEW_TICKET, form);
+        context.commit(SET_TICKETS_COUNT);
+      }
+    }
+    catch(err) {
+      console.log('error', err);
     }
   }
 };
 
 const mutations = {
+  // NOT WORKING
   [ADD_NEW_TICKET](state, newTicket) {
+    console.log('stateee', state);
     state.tickets.push(newTicket);
   }
 };

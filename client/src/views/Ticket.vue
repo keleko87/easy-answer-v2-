@@ -60,8 +60,7 @@
 
 <script>
 import { required, minLength } from 'vuelidate/lib/validators';
-// import { SAVE_TICKET } from '../store/actions.type';
-import { TicketsService } from '../common/api.service';
+import { SAVE_TICKET } from '../store/actions.type';
 
 export default {
   data() {
@@ -81,29 +80,9 @@ export default {
       this.form.photo = photo;
     },
 
-    async onSubmit() {
-      const formData = new FormData();
-      formData.append('title', this.form.title);
-      formData.append('content', this.form.content);
-      formData.append('tags', this.form.tags);
-      formData.append('photo', this.form.photo);
-      console.log('title', formData.getAll('title'));
-      console.log('content', formData.getAll('content'));
-      console.log('photo form', formData.getAll('photo'));
-
-      try {
-        const response = await TicketsService.saveTicket(formData);
-        console.log('Uploaddeddd', response);
-      }
-      catch(err) {
-        console.log('error', err);
-      }
-    },
-
-    async saveTicket(ticket) {
-      const response = await TicketsService.saveTicket(ticket);
-      console.log('save', response);
-      // this.$store.dispatch(SAVE_TICKET, ticket);
+    onSubmit() {
+      this.$store.dispatch(SAVE_TICKET, this.form);
+      console.log('this.store', this.$store);
     }
   },
 
