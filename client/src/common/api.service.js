@@ -63,7 +63,6 @@ export const TicketsService = {
   },
 
   saveTicket(ticket) {
-    console.log('save ticket', ticket);
     return Vue.axios.post(`${this.resource}/new`, ticket);
   }
 

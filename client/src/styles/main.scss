@@ -1,0 +1,53 @@
+.card {
+  text-align: left;
+  margin-bottom: 20px;
+}
+
+.card .card-body .actions {
+  margin-top: 5px;
+}
+
+.image-avatar {
+  width: 41px;
+  height: 41px;
+}
+
+.tag-text {
+  color: #72399d;
+  background-color: #ede1f4;
+  border-color: #ffffff;
+  /* color: #ffffff;
+  background-color: #593196;
+  border-color: #593196; */
+  border-radius: 3px;
+  padding: 5px 10px;
+  font-size: 12px;
+}
+
+.content {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  height: 45px;
+  /* white-space: nowrap; */
+  padding-right: 25px;
+}
+
+.actions {
+  display: flex;
+  justify-content: space-between;
+}
+
+.ticket-comments {
+  background-color: #5eba7d;
+  border-radius: 3px;
+  color: #FFF;
+  height: 55px;
+  padding: 0 10px;
+}
+
+.ticket-comments .comments {
+  font-size: 18px;
+}
+.ticket-comments small {
+  vertical-align: super;
+}

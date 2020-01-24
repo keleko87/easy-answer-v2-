@@ -6,6 +6,7 @@ import Vuelidate from 'vuelidate'
 import ApiService from './common/api.service';
 import DateFilter from "./common/date.filter";
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue';
+import './styles/main.scss';
 import './registerServiceWorker';
 
 Vue.use(BootstrapVue)

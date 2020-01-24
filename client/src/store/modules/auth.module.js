@@ -6,12 +6,24 @@ import { AuthService } from '../../common/api.service';
 
 const state = {
   errors: null,
-  user: {},
+  user: {
+   _id: '',
+   username: '',
+   email: '',
+   imgAvatar: ''
+  },
   isAuthenticated: !!JwtService.getToken()
 };
 
 const getters = {
   currentUser(state) {
+    // PENDING REMOVE WHEN LOGIN FEATURE IS ADDED
+    state.user = {
+      _id: '5e26f691358276336845a086',
+      username: 'Mario Martin',
+      email: 'mariomarsan7@gmail.com',
+      imgAvatar: 'https://avatars.slack-edge.com/2017-05-22/185651642560_074e8eb908d505721a15_512.jpg'
+     };
     return state.user;
   },
   isAuthenticated(state) {
