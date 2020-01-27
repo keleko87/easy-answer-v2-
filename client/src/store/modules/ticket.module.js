@@ -1,6 +1,6 @@
-import { TicketsService } from '../../common/api.service';
-import { SAVE_TICKET, GET_TICKET, CHECK_TICKET_CREATOR } from '../actions.type';
-import { SET_TICKET } from '../mutations.type';
+import { TicketsService, CommentService } from '../../common/api.service';
+import { SAVE_TICKET, GET_TICKET, GET_TICKET_COMMENTS } from '../actions.type';
+import { SET_TICKET, SET_COMMENTS } from '../mutations.type';
 
 const state = {
   data: {
@@ -18,18 +18,23 @@ const getters = {
   ticket(state) {
     return state.data;
   },
-  comments(state) {
+  getComments(state) {
     return state.data.comments;
-  },
-  isTicketCreator(state) {
-    return state;
   }
 };
 
 const actions = {
   async [GET_TICKET](context, id) {
     const { data } = await TicketsService.getTicket(id);
+    const comments = await CommentService.getTicketComments(id);
     context.commit(SET_TICKET, data);
+    context.commit(SET_COMMENTS, comments.data);
+    // context.dispatch(GET_TICKET_COMMENTS, id);
+  },
+
+  async [GET_TICKET_COMMENTS] (context, ticketId) {
+    const { data } = await CommentService.getTicketComments(ticketId);
+    context.commit(SET_COMMENTS, data);
   },
 
   async [SAVE_TICKET](context, form) {
@@ -50,16 +55,16 @@ const actions = {
       window.console.log('error', err);
       return err;
     }
-  },
-
-  async [CHECK_TICKET_CREATOR] (context, user) {
-
   }
 };
 
 const mutations = {
   [SET_TICKET](state, newTicket) {
     state.data = newTicket;
+  },
+  [SET_COMMENTS](state, comments) {
+    state.data.comments = comments;
+    console.log('after', state.data.comments);
   }
 };
 

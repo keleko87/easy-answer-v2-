@@ -68,6 +68,15 @@ export const TicketsService = {
 
 };
 
+
+export const CommentService = {
+  resource: 'ticket/comment',
+
+  getTicketComments(ticketId) {
+    return ApiService.get(this.resource, ticketId);
+  }
+};
+
 export const AuthService = {
   resource: '/auth',
 

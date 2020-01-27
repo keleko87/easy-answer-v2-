@@ -31,8 +31,6 @@ router.get('/new', (req, res, next) => {
 
 //  Adding new Ticket
 router.post('/new', upload.single('photo'), (req, res) => {
-  console.log(req.user, '=====================================',req.file);
-  console.log('req boooooooooooooooooooddddddddddddddd',req.body);
   let image;
   if (req.file) image = req.file.filename;
   else image = 'nofile';
@@ -60,10 +58,25 @@ router.post('/new', upload.single('photo'), (req, res) => {
 router.get('/:id', (req, res, next) => {
   Ticket.findById(req.params.id).populate('creatorId').exec()
     .then(ticket => {
-      res.render('ticket/detail', {
-        ticket: ticket
-      });
-      if(ticket) return ticket;
+      // res.render('ticket/detail', {
+      //   ticket: ticket
+      // });
+      // if(ticket) return ticket;
+      
+      // NEW
+      console.log(ticket);
+      if (!ticket) { 
+        res.json('No ticket found');
+      }
+      
+      if (ticket.image !== 'nofile') {
+        const image = `${process.env.API}/uploads/${ticket.image}`;
+        const newTicket = Object.assign(ticket, { image });
+        res.json(newTicket);
+
+      } else {
+        res.json(ticket);
+      }
     })
     .catch(err => console.log(err));
 });
@@ -103,6 +116,7 @@ router.post('/:id', upload.single('editPhoto'), ensureLoggedIn('auth/login'),  (
     res.redirect(`/ticket/${ticket._id}`);
   });
 });
+
 router.get('/:id/delete', ensureLoggedIn('auth/login'), function(req, res, next) {
   let id = req.params.id;
   Ticket.findByIdAndRemove(id, (err, obj) => {
@@ -114,10 +128,22 @@ router.get('/:id/delete', ensureLoggedIn('auth/login'), function(req, res, next)
 // READ comments of the ticket
 router.get('/comment/:id', (req, res, next) => {
   var id = req.params.id;
-  Comment.find({ticket_rel: id}).populate('creatorCommentId').exec()
-  .then( comments => {
-        // Return JSON DATA
-        res.json(comments);
+  Comment.find({ticket_rel: id})
+    .populate('creatorCommentId')
+    .exec()
+    .then(comments => {
+
+      const comms = comments.map((comment) => {
+        if (comment.image !== 'nofile') {
+          const image = `${process.env.API}/uploads/${comment.image}`;
+          const newComment = Object.assign(comment, { image });
+          return newComment;
+        }
+
+        return comment;
+      });
+  
+      res.json(comms);
     })
     .catch( err => console.log(err));
 });
@@ -138,13 +164,13 @@ router.post('/comment/:id', function(req,res){
 	upload2(req,res,function(err) {
 		if(err) {
 			return res.end("Error uploading file.");
-		}
+    }
 		// res.end("File is uploaded");
     console.log(req.file);
     let image;
     if (req.file) image = req.file.filename;
     else image = 'nofile';
-
+  
     console.log(image);
 
     let comment = new Comment({

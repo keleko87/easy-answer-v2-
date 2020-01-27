@@ -38,7 +38,6 @@ router.get('/error-login', (req, res) => {
 router.get('/profile', ensureLoggedIn('/auth/login'), (req, res) => {
   let user;
   if (req.user) user = req.user;
-  console.log('/profile', res);
   res.json(user);
 });
 
