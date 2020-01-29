@@ -160,13 +160,21 @@ var storage	=	multer.diskStorage({
 
 var upload2 = multer({ storage : storage}).single('photo-comment');
 
-router.post('/comment/:id', function(req,res){
-	upload2(req,res,function(err) {
+// router.post('/new', upload.single('photo'), (req, res) => {
+//   let image;
+//   if (req.file) image = req.file.filename;
+//   else image = 'nofile';
+
+// });
+
+router.post('/comment/:id', (req, res) => {
+	upload2(req, res, (err) => {
+    console.log(req.file, 'req----------', req.body);
+
 		if(err) {
 			return res.end("Error uploading file.");
     }
-		// res.end("File is uploaded");
-    console.log(req.file);
+
     let image;
     if (req.file) image = req.file.filename;
     else image = 'nofile';
@@ -177,13 +185,17 @@ router.post('/comment/:id', function(req,res){
       content: req.body.content,
       image: image,
       ticket_rel: req.params.id,
-      creatorCommentId: req.user._id,
+      creatorCommentId: '5e26f691358276336845a086', // req.user._id,
       solved: false,
       votes: []
     });
+
     console.log('NEW COMMENT', comment);
+
     comment.save((err, obj) => {
-      res.redirect(`/ticket/${obj.ticket_rel}`);
+      // res.redirect(`/ticket/${obj.ticket_rel}`);
+      if (obj) return res.json(obj)
+      else if (err) return res.json(err)
     });
 	});
 });

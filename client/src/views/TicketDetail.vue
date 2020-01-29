@@ -1,6 +1,6 @@
 <template>
-  <div class="container" v-if="ticket">
-    <div class="row" v-if="ticket.creatorId.length">
+  <div class="container" v-if="getTicket">
+    <div class="row" v-if="getTicket.creatorId && getTicket.creatorId.length">
 
       <div class="col-md-1"></div>
       <div class="col-md-10">
@@ -9,10 +9,10 @@
           <div class="card-body">
             <div class="d-flex justify-content-between ">
               <div class="message">
-                <h5 class="card-title">{{ ticket.title }}</h5>
-                <div class="content expanded card-text">{{ ticket.content }}</div>
-                <div class="ticket-image" v-if="ticket.image !== 'nofile'">
-                  <img :src="ticket.image" alt="ticket image" class="card-image image-responsive">
+                <h5 class="card-title">{{ getTicket.title }}</h5>
+                <div class="content expanded card-text">{{ getTicket.content }}</div>
+                <div class="ticket-image" v-if="getTicket.image !== 'nofile'">
+                  <img :src="getTicket.image" alt="ticket image" class="card-image image-responsive">
                 </div>
               </div>
 
@@ -32,7 +32,7 @@
               </div>
               <div class="tag">
                 <span class="tag-text">
-                  {{ ticket.tags }}
+                  {{ getTicket.tags }}
                 </span>
               </div>
             </div>
@@ -42,14 +42,14 @@
             <div class="row">
               
               <div class="col-auto">
-                <img :src="ticket.creatorId[0].imgAvatar" class="image-avatar rounded-circle">
+                <img :src="getTicket.creatorId[0].imgAvatar" class="image-avatar rounded-circle">
               </div>
 
               <div class="col-auto p-0">
                 <div class="">
-                  <span><b>{{ ticket.creatorId[0].username }} </b>posted a question</span>
+                  <span><b>{{ getTicket.creatorId[0].username }} </b>posted a question</span>
                 </div>
-                <small class="text-muted time">asked:{{ ticket.created_at | date }}</small>
+                <small class="text-muted time">asked:{{ getTicket.created_at | date }}</small>
               </div>
 
             </div>
@@ -58,10 +58,10 @@
       </div>
     </div>
 
-    <div class="row" v-if="ticket.comments">
+    <div class="row" v-if="getTicket.comments">
       <div class="col-md-2"></div>
       <div class="col-xs-12 col-md-8 col-md-offset-2">
-        <div v-for="comment in ticket.comments" :key="comment._id" class="card">
+        <div v-for="comment in getComments" :key="comment._id" class="card">
 
           <div class="card-body">  
 
@@ -101,43 +101,66 @@
       </div>
     </div>
 
+      <div>
+        comments {{ getComments }}
+      </div>
+
+    <div>
+      <new-comment></new-comment>
+    </div>
   </div> 
 </template>
 
 <script>
 import { GET_TICKET } from '../store/actions.type';
-import { mapGetters, mapState } from 'vuex';
-import { BIcon, BIconChevronDown, BIconChevronUp } from 'bootstrap-vue'
+import { mapGetters } from 'vuex';
+import { BIcon, BIconChevronDown, BIconChevronUp } from 'bootstrap-vue';
+import NewComment from '../components/NewComment';
+import store from '../store';
 
 export default {
   name: 'ticketDetail',
   data() {
     return {
+      commentsArr: [],
       uploadsURL: `${process.env.VUE_APP_API}/uploads/`
     };
   },
 
   components: {
+    NewComment,
     BIcon,
     BIconChevronDown,
     BIconChevronUp
   },
 
   computed: {
-    ...mapState(['home']),
-    ...mapGetters(['ticket', 'getComments', 'currentUser']),
-
+    ...mapGetters(['getTicket', 'currentUser']),
+    getComments() {
+      console.log('TICKET DETAIL getcomments', this.$store.state.ticket.data.comments);
+      return this.$store.state.ticket.data.comments;
+    },
+    comments() {
+      return this.$store.getters.getComments;
+    },
     // DOUBT -> Move to store: getter ??
     isTicketCreator() {
-      // console.log(this.currentUser, '------', this.ticket.creatorId);
       // return this.ticket && this.ticket.creatorId[0] && (this.isTicketCreator[0]._id === this.currentUser._id);
-      return this.ticket;
+      return true;
     }
+  },
+
+  beforeRouteEnter(to, from, next) {
+    const { id } = to.params;
+    store.dispatch(GET_TICKET, id).then(() => {
+      next();
+    });
+
   },
 
   mounted() {
     this.$nextTick(() => {
-      this.getTicketById();
+      // this.getTicketById();
     });
   },
 
@@ -146,8 +169,15 @@ export default {
       const { id } = this.$route.params;
       this.$store.dispatch(GET_TICKET, id);
       // this.$store.dispatch(GET_TICKET_COMMENTS, id);
-    }
+    },
   },
+
+  watch: {
+    getComments(newVal, oldVal) {
+      console.log(`Updating from ${oldVal} to ${newVal}`);
+      return newVal;
+    }
+  }
 }
 </script>
 

@@ -81,7 +81,17 @@ export default {
     },
 
     onSubmit() {
-      this.$store.dispatch(SAVE_TICKET, this.form);
+      const formData = new FormData();
+
+      formData.append('title', this.form.title);
+      formData.append('content', this.form.content);
+      formData.append('tags', this.form.tags);
+
+      if (this.form.photo) {
+        formData.append('photo', this.form.photo);
+      }
+
+      this.$store.dispatch(SAVE_TICKET, formData);
       this.$router.push({ name: "home" });
     }
   },

@@ -74,6 +74,10 @@ export const CommentService = {
 
   getTicketComments(ticketId) {
     return ApiService.get(this.resource, ticketId);
+  },
+
+  saveComment(comment, id) {
+    return Vue.axios.post(`${this.resource}/${id}`, comment);
   }
 };
 
