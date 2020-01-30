@@ -92,7 +92,7 @@
                 <div class="">
                   <span><b>{{ comment.creatorCommentId.username }}</b></span>
                 </div>
-                <small class="text-muted time">{{ comment.created_at | date }}</small>
+                <small class="text-muted time">{{ comment.creatorCommentId.created_at | date }}</small>
               </div>
 
             </div>

@@ -158,21 +158,14 @@ var storage	=	multer.diskStorage({
   }
 });
 
-var upload2 = multer({ storage : storage}).single('photo-comment');
-
-// router.post('/new', upload.single('photo'), (req, res) => {
-//   let image;
-//   if (req.file) image = req.file.filename;
-//   else image = 'nofile';
-
-// });
+var uploadPhotoComment = multer({ storage : storage}).single('photoComment');
 
 router.post('/comment/:id', (req, res) => {
-	upload2(req, res, (err) => {
+	uploadPhotoComment(req, res, (err) => {
     console.log(req.file, 'req----------', req.body);
 
 		if(err) {
-			return res.end("Error uploading file.");
+			return res.end("Error uploading file!");
     }
 
     let image;
@@ -199,6 +192,7 @@ router.post('/comment/:id', (req, res) => {
     });
 	});
 });
+
 
 //Add new comment in ticket
 // router.post('/comment/:id', [upload.single('photo-comment'), ensureLoggedIn('/auth/login')], (req, res, next) => {
