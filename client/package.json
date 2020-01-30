@@ -1,15 +1,15 @@
 {
   "name": "easy-answer",
   "version": "0.1.0",
-  "author": "Mario Martin <mariomarsan7@gmail.com>",
   "private": true,
+  "author": "Mario Martin <mariomarsan7@gmail.com>",
   "scripts": {
-    "offlinedev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
-    "dev": "cross-env BABEL_ENV=dev vue-cli-service serve",
     "build": "cross-env BABEL_ENV=dev vue-cli-service build",
+    "test:unit": "vue-cli-service test:unit",
+    "lint": "vue-cli-service lint",
     "build:development": "vue-cli-service build --mode staging",
-    "test": "cross-env BABEL_ENV=test jest --coverage",
-    "lint": "vue-cli-service lint"
+    "dev": "cross-env BABEL_ENV=dev vue-cli-service serve",
+    "test:env": "cross-env BABEL_ENV=test jest --coverage --clearCache"
   },
   "dependencies": {
     "axios": "^0.19.0",
@@ -26,27 +26,25 @@
     "vuex": "^3.1.1"
   },
   "devDependencies": {
-    "@babel/core": "^7.6.2",
-    "@babel/preset-env": "^7.6.2",
     "@vue/cli-plugin-babel": "^3.12.0",
     "@vue/cli-plugin-eslint": "^3.10.0",
     "@vue/cli-plugin-pwa": "^3.10.0",
-    "@vue/cli-plugin-unit-jest": "^3.10.0",
+    "@vue/cli-plugin-unit-jest": "^4.1.2",
     "@vue/cli-service": "^3.10.0",
     "@vue/eslint-config-prettier": "^4.0.1",
-    "@vue/test-utils": "^1.0.0-beta.29",
+    "@vue/test-utils": "1.0.0-beta.29",
     "babel-core": "7.0.0-bridge.0",
+    "babel-eslint": "^10.0.1",
     "babel-jest": "^24.9.0",
     "cross-env": "^6.0.3",
+    "eslint": "^5.16.0",
     "eslint-plugin-import": "^2.20.0",
+    "eslint-plugin-vue": "^5.0.0",
     "lint-staged": "^8.2.1",
     "node-sass": "^4.12.0",
     "nyc": "^14.1.1",
     "sass-loader": "^7.1.0",
-    "vue-template-compiler": "^2.6.10",
-    "webpack": "^4.41.5",
-    "webpack-cli": "^3.3.10",
-    "webpack-dev-server": "^3.10.1"
+    "vue-template-compiler": "^2.6.10"
   },
   "gitHooks": {
     "pre-commit": "lint-staged"
