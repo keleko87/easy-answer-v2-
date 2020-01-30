@@ -58,7 +58,7 @@
       </div>
     </div>
 
-    <div class="row" v-if="getTicket.comments">
+    <div class="row" v-if="getComments.length > 0">
       <div class="col-md-2"></div>
       <div class="col-xs-12 col-md-8 col-md-offset-2">
         <div v-for="comment in getComments" :key="comment._id" class="card">
@@ -81,7 +81,7 @@
             </div>
           </div>
             
-          <div class="card-footer">
+          <div class="card-footer" v-if="comment.creatorCommentId">
             <div class="row">
               
               <div class="col-auto">
@@ -100,10 +100,6 @@
         </div>
       </div>
     </div>
-
-      <div>
-        comments {{ getComments }}
-      </div>
 
     <div>
       <new-comment></new-comment>
@@ -135,14 +131,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['getTicket', 'currentUser']),
-    getComments() {
-      console.log('TICKET DETAIL getcomments', this.$store.state.ticket.data.comments);
-      return this.$store.state.ticket.data.comments;
-    },
-    comments() {
-      return this.$store.getters.getComments;
-    },
+    ...mapGetters(['getTicket', 'getComments']),
     // DOUBT -> Move to store: getter ??
     isTicketCreator() {
       // return this.ticket && this.ticket.creatorId[0] && (this.isTicketCreator[0]._id === this.currentUser._id);
@@ -170,13 +159,6 @@ export default {
       this.$store.dispatch(GET_TICKET, id);
       // this.$store.dispatch(GET_TICKET_COMMENTS, id);
     },
-  },
-
-  watch: {
-    getComments(newVal, oldVal) {
-      console.log(`Updating from ${oldVal} to ${newVal}`);
-      return newVal;
-    }
   }
 }
 </script>

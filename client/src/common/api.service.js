@@ -63,7 +63,7 @@ export const TicketsService = {
   },
 
   saveTicket(ticket) {
-    return Vue.axios.post(`${this.resource}/new`, ticket);
+    return ApiService.post(`${this.resource}/new`, ticket);
   }
 
 };
@@ -77,7 +77,7 @@ export const CommentService = {
   },
 
   saveComment(comment, id) {
-    return Vue.axios.post(`${this.resource}/${id}`, comment);
+    return ApiService.post(`${this.resource}/${id}`, comment);
   }
 };
 

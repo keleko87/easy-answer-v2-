@@ -3,10 +3,6 @@
     <div class="col-md-1"></div>
     <div class="col-md-10">
 
-      <div>
-        comments CHILD {{ getComments }}
-      </div>
-
       <form @submit.prevent="onSubmit" enctype="multipart/form-data">
         <div class="form-group">
           <label for="content">Your answer</label>
@@ -28,10 +24,6 @@
       </form>
 
     </div>
-
-    comments: {{ comments.length }}
-  <br>
-
   </div>  
 </template>
 
@@ -52,13 +44,6 @@ export default {
     }
   },
 
-  computed: {
-    getComments() {
-      console.log('get comments NEW COMMENT', this.$store.state.ticket.data.comments);
-      return this.$store.state.ticket.data.comments;
-    }
-  },
-
   methods: {
     onSelect() {
       const photo = this.$refs.photoComment.files[0];
@@ -75,9 +60,6 @@ export default {
 
       const { id } = this.$route.params;
       this.$store.dispatch(SAVE_COMMENT, { form: formData, id });
-      debugger;
-      this.comments = this.$store.state.ticket.data.comments;
-      // UPDATE COMMENTS PULLING
     }
   },
 
