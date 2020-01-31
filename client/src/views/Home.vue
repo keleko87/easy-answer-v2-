@@ -56,7 +56,7 @@ export default {
     TicketList
   },
 
-    computed: {
+  computed: {
     ...mapGetters(["currentUser", "isAuthenticated", "tickets"])
   }
 };
