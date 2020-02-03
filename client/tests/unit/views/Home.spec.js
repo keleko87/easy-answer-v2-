@@ -17,7 +17,7 @@ describe('Home', () => {
         { id: '2', title: 'title 2', content: 'content 222' }
       ]
     }
-  };;
+  };
 
   beforeEach(() => {
     getters = {

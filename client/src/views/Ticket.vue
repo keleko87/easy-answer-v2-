@@ -44,7 +44,7 @@
                 </select>
               </div>
               <div class="form-group">
-                <input type="file" ref="photo" name="photo" @change="onSelect">
+                <input id="photo" type="file" ref="photo" name="photo" @change="onSelect">
                 <!-- <file-upload /> -->
               </div>
               <button type="submit" class="btn btn-success">Send Ticket</button>
@@ -63,6 +63,8 @@ import { required, minLength, maxLength } from 'vuelidate/lib/validators';
 import { SAVE_TICKET } from '../store/actions.type';
 
 export default {
+  name: 'Ticket',
+
   data() {
     return {
       form: {
