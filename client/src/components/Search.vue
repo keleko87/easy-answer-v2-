@@ -29,7 +29,7 @@ export default {
     },
 
     responseEvent(value) {
-      this.$emit.onResponse(value);
+      this.$emit('onResponse', value);
     },
 
     onInput(ev) {

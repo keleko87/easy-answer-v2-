@@ -15,7 +15,8 @@
                   class="form-control"
                   id="title"
                   placeholder="Enter a title for your post"
-                  name="title">
+                  name="title"
+                />
               </div>
               <div class="form-group">
                 <label for="content">Content</label>
@@ -57,6 +58,9 @@
               <button type="submit" class="btn btn-success">Send Ticket</button>
             </form>
           </div>
+
+          <quill-editor></quill-editor>
+
         </div>
       </div>
     </div>
@@ -66,9 +70,13 @@
 <script>
 import { required, minLength, maxLength } from 'vuelidate/lib/validators';
 import { SAVE_TICKET } from '../store/actions.type';
+import QuillEditor from '../components/QuillEditor';
 
 export default {
   name: 'Ticket',
+  components: {
+    QuillEditor
+  },
 
   data() {
     return {

@@ -2,17 +2,17 @@ import Vue from 'vue';
 import App from './App.vue';
 import router from './router';
 import store from './store';
-import Vuelidate from 'vuelidate'
+import Vuelidate from 'vuelidate';
 import ApiService from './common/api.service';
-import DateFilter from "./common/date.filter";
+import DateFilter from './common/date.filter';
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue';
 import './styles/main.scss';
 import './registerServiceWorker';
 
-Vue.use(BootstrapVue)
-Vue.use(IconsPlugin)
+Vue.use(BootstrapVue);
+Vue.use(IconsPlugin);
 Vue.use(Vuelidate);
-Vue.filter("date", DateFilter);
+Vue.filter('date', DateFilter);
 
 Vue.config.productionTip = false;
 
