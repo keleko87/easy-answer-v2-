@@ -1,5 +1,6 @@
 <template>
   <div class="editor">
+    content: {{ content }}
     <editor-menu-bar :editor="editor" v-slot="{ commands, isActive }">
       <div class="menubar">
         <button
@@ -136,6 +137,22 @@
           <b-icon-arrow-clockwise></b-icon-arrow-clockwise>
           <!-- <b-icon-reply-fill></b-icon-reply-fill> -->
         </button>
+
+        <button
+          class="menubar__button"
+          @click="showImagePrompt(commands.image)"
+        >
+          <b-icon-image></b-icon-image>
+          <!-- <icon name="image" /> -->
+        </button>
+
+        <button
+          class="menubar__button"
+          @click="showImageUploaded(commands.image)"
+        >
+          <b-icon-image></b-icon-image>
+          <!-- <icon name="image" /> -->
+        </button>
       </div>
     </editor-menu-bar>
 
@@ -151,6 +168,7 @@ import {
   HardBreak,
   Heading,
   HorizontalRule,
+  Image,
   OrderedList,
   BulletList,
   ListItem,
@@ -173,6 +191,11 @@ export default {
     EditorMenuBar
   },
 
+  props: {
+    imageUrl: String,
+    content: String
+  },
+
   data() {
     return {
       editor: new Editor({
@@ -183,6 +206,7 @@ export default {
           new HardBreak(),
           new Heading({ levels: [1, 2, 3] }),
           new HorizontalRule(),
+          new Image(),
           new ListItem(),
           new OrderedList(),
           new TodoItem(),
@@ -197,28 +221,41 @@ export default {
         ],
         content: `
           <h2>
-            Hi there,
-          </h2>
-          <p>
-            this is a very <em>basic</em> example of tiptap.
-          </p>
-          <pre><code>body { display: none; }</code></pre>
-          <ul>
-            <li>
-              A regular list
-            </li>
-            <li>
-              With regular items
-            </li>
-          </ul>
-          <blockquote>
-            It's amazing 👏
-            <br />
-            – mom
-          </blockquote>
-        `
+           Hey write here!
+          </h2>`,
+        onUpdate: ({ getHTML }) => {
+          console.log({ getHTML }, 'onUpdate', this.content);
+          this.$emit('input', getHTML());
+        }
       })
     };
+  },
+
+  watch: {
+    content(value) {
+      console.log('editor content', this.editor);
+      if (value) {
+        console.log('valueeee', value);
+        this.editor.setContent(value);
+        this.$emit('input', value);
+      }
+    }
+  },
+
+  methods: {
+    showImagePrompt(command) {
+      console.log('command', command.image);
+      const src = prompt('Enter the url of your image here');
+      if (src !== null) {
+        command({ src });
+      }
+    },
+
+    showImageUploaded(command) {
+      debugger;
+      const src = this.imageUrl;
+      command({ src });
+    }
   },
   beforeDestroy() {
     this.editor.destroy();
@@ -227,7 +264,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
 .menubar {
   &__button {
     font-size: 23px;

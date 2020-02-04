@@ -29,6 +29,8 @@
                   name="content"
                 >
                 </textarea>
+
+                {{ $v.form.content.$model }}
               </div>
               <div class="form-group">
                 <label for="tags">Tags</label>
@@ -55,12 +57,18 @@
                 />
                 <!-- <file-upload /> -->
               </div>
+              <div id="preview">
+                <img v-if="photoUrl" :src="photoUrl" />
+              </div>
               <button type="submit" class="btn btn-success">Send Ticket</button>
             </form>
+
+            <quill-editor
+              :content="$v.form.content.$model"
+              :imageUrl="photoUrl"
+            ></quill-editor>
+
           </div>
-
-          <quill-editor></quill-editor>
-
         </div>
       </div>
     </div>
@@ -84,14 +92,16 @@ export default {
         title: '',
         content: '',
         tags: [''],
-        photo: ''
-      }
+        photo: {}
+      },
+      photoUrl: ''
     };
   },
 
   methods: {
     onSelect() {
       const photo = this.$refs.photo.files[0];
+      this.photoUrl = URL.createObjectURL(photo);
       this.form.photo = photo;
     },
 
