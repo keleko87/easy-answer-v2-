@@ -1,4 +1,4 @@
-import { mount, createLocalVue, shallowMount } from '@vue/test-utils'
+import { mount, createLocalVue, shallowMount } from '@vue/test-utils';
 import Ticket from '../../../src/views/Ticket.vue';
 import Vuex from 'vuex';
 import Vuelidate from 'vuelidate';
@@ -31,10 +31,10 @@ describe('Ticket', () => {
 
   let state = {
     ticket: {
-      data:{ 
-        id: '1', 
-        title: 'my title', 
-        content: 'content 222' 
+      data:{
+        id: '1',
+        title: 'my title',
+        content: 'content 222'
       },
       comments: [
         {

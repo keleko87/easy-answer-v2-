@@ -110,7 +110,7 @@
 <script>
 import { GET_TICKET } from '../store/actions.type';
 import { mapGetters } from 'vuex';
-import { BIcon, BIconChevronDown, BIconChevronUp } from 'bootstrap-vue';
+import { BIconChevronDown, BIconChevronUp } from 'bootstrap-vue';
 import NewComment from '../components/NewComment';
 import store from '../store';
 
@@ -125,7 +125,6 @@ export default {
 
   components: {
     NewComment,
-    BIcon,
     BIconChevronDown,
     BIconChevronUp
   },

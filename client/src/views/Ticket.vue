@@ -1,61 +1,66 @@
 <template>
   <div class="ticket-new my-5">
-
     <div class="container">
       <div class="row">
         <div class="col-xs-12 col-md-8 col-md-offset-2 mx-auto">
           <h2>Create New ticket</h2>
-        
+
           <div class="well">
             <form @submit.prevent="onSubmit" enctype="multipart/form-data">
               <div class="form-group control-label">
                 <label for="title">Title</label>
-                <input 
+                <input
                   type="text"
-                  v-model.trim="$v.form.title.$model" 
-                  class="form-control" 
-                  id="title" 
-                  placeholder="Enter a title for your post" 
+                  v-model.trim="$v.form.title.$model"
+                  class="form-control"
+                  id="title"
+                  placeholder="Enter a title for your post"
                   name="title">
               </div>
               <div class="form-group">
                 <label for="content">Content</label>
                 <textarea
-                  v-model.trim="$v.form.content.$model" 
-                  class="form-control" 
-                  rows="5" ç
+                  v-model.trim="$v.form.content.$model"
+                  class="form-control"
+                  rows="5"
                   id="content"
-                  placeholder="Write your issue" 
-                  name="content">
+                  placeholder="Write your issue"
+                  name="content"
+                >
                 </textarea>
               </div>
               <div class="form-group">
                 <label for="tags">Tags</label>
                 <select
                   v-model.trim="$v.form.tags.$model"
-                  class="form-control" 
-                  id="tags" 
-                  placeholder="Choose your tag" 
-                  name="tags">
-                    <option>html</option>
-                    <option>css</option>
-                    <option>js</option>
-                    <option>node</option>
+                  class="form-control"
+                  id="tags"
+                  placeholder="Choose your tag"
+                  name="tags"
+                >
+                  <option>html</option>
+                  <option>css</option>
+                  <option>js</option>
+                  <option>node</option>
                 </select>
               </div>
               <div class="form-group">
-                <input id="photo" type="file" ref="photo" name="photo" @change="onSelect">
+                <input
+                  id="photo"
+                  type="file"
+                  ref="photo"
+                  name="photo"
+                  @change="onSelect"
+                />
                 <!-- <file-upload /> -->
               </div>
               <button type="submit" class="btn btn-success">Send Ticket</button>
             </form>
           </div>
-        
         </div>
       </div>
     </div>
-
-  </div> 
+  </div>
 </template>
 
 <script>
@@ -71,9 +76,9 @@ export default {
         title: '',
         content: '',
         tags: [''],
-        photo: ""
+        photo: ''
       }
-    }
+    };
   },
 
   methods: {
@@ -94,31 +99,26 @@ export default {
       }
 
       this.$store.dispatch(SAVE_TICKET, formData);
-      this.$router.push({ name: "home" });
+      this.$router.push({ name: 'home' });
     }
   },
 
   validations: {
-     form: {
-        title: {
-          required,
-          minLength: minLength(5)
-        },
-        content: {
-          required,
-          minLength: minLength(10),
-          maxLength: maxLength(500)
-        },
-        tags: {
-          required
-        },
-        file: {
-        }
-      }
+    form: {
+      title: {
+        required,
+        minLength: minLength(5)
+      },
+      content: {
+        required,
+        minLength: minLength(10),
+        maxLength: maxLength(500)
+      },
+      tags: {
+        required
+      },
+      file: {}
+    }
   }
-}
+};
 </script>
-
-<style scoped>
-  
-</style>

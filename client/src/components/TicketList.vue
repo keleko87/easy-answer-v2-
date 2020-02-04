@@ -95,7 +95,10 @@ export default {
     type: {
       type: String,
       required: false,
-      default: "all"
+      default: 'all'
+    },
+    list: {
+      type: Array
     }
   },
 
@@ -113,15 +116,16 @@ export default {
   computed: {
     ...mapGetters(['ticketsCount', 'isLoading']),
     tickets() {
-      const items = this.$store.getters.tickets;
+      const items = this.list;
       // Return just page of items needed
       return items.slice(
         (this.pagination.currentPage - 1) * this.pagination.perPage,
         this.pagination.currentPage * this.pagination.perPage
-      )
+      );
     },
-    totalRows () {
-      return this.$store.getters.loadedLists.length
+
+    totalRows() {
+      return this.$store.getters.loadedLists.length;
     }
   },
 
