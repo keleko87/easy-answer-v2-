@@ -1,4 +1,5 @@
 const mongoose     = require('mongoose');
+const tags = ['html', 'css', 'js', 'node', 'vue', 'angular', 'react'];
 
 const TicketSchema = mongoose.Schema({
   title:    {type: String, required: true},
@@ -6,9 +7,10 @@ const TicketSchema = mongoose.Schema({
   tags:    {
     type: String,
     required: true,
-    enum: ['html', 'css', 'js', 'node']
+    enum: tags
   },
-  image: {type:String},
+  imageUrl: { type: String },
+  image: { type: Object },
   creatorId: [{type: mongoose.Schema.Types.ObjectId, ref: 'User'}]
 }, {
   timestamps: {

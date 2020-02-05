@@ -13,7 +13,7 @@ router.get('/list', (req, res) => {
   .exec()
   .then((data) => {
     const tickets = data.map((ticket) => {
-      const image = `${process.env.API}/uploads/${ticket.image}`;
+      const image = `${process.env.API_UPLOADS}${ticket.image}`;
       const newTicket = Object.assign(ticket, { image });
       
       return newTicket;
@@ -29,30 +29,60 @@ router.get('/new', (req, res, next) => {
   res.render('ticket/new');
 });
 
-//  Adding new Ticket
-router.post('/new', upload.single('photo'), (req, res) => {
-  let image;
-  if (req.file) image = req.file.filename;
-  else image = 'nofile';
-
-  let ticket = new Ticket({
-    title: req.body.title,
-    content: req.body.content,
-    tags: req.body.tags,
-    image: image,
-    creatorId: '5e26f691358276336845a086' // IMPORTANT USER ID LOGGED IN
-  });
-  console.log(ticket);
-  ticket.save((err, ticket) => {
-    if (err) {
-      console.log('errorrrrr', err);
-      if (statusCode >= 100 && statusCode < 600) res.status(statusCode);
-      else res.status(500);
-    }
-    res.redirect('/');
-  });
+var storagePhoto	=	multer.diskStorage({
+  destination: function (req, file, callback) {
+    callback(null, './public/uploads');
+  },
+  filename: function (req, file, callback) {
+    const image = req.body.imageUrl;
+    const imageUrl = image.split(`blob:${process.env.APP_WEB}`)
+    callback(null, imageUrl[1]);
+  }
 });
 
+var uploadPhoto = multer({ storage : storagePhoto }).single('photo');
+
+router.post('/new', (req, res) => {
+  uploadPhoto(req, res, (err) => {
+  
+    if(err) {
+      return res.end("Error uploading file!");
+    }
+  
+    let image;
+    let imageUrl = req.body.imageUrl || '';
+    const { title, content, tags } = req.body;
+
+    if (req.file && imageUrl) {
+      image = req.file;
+      imageUrl = req.body.imageUrl.replace(`blob:${process.env.APP_WEB}`, '');
+    } else {
+      image = { filename: 'nofile' };
+      imageUrl = '';
+    }
+  
+    let ticket = new Ticket({
+      title,
+      content,
+      tags,
+      image,
+      imageUrl,
+      creatorId: '5e26f691358276336845a086' // IMPORTANT USER ID LOGGED IN
+    });
+
+    console.log('TICKET:::::::', ticket);
+    
+    ticket.save((err, ticket) => {
+      if (err) {
+        console.log('errorrrrr', err);
+        if (statusCode >= 100 && statusCode < 600) res.status(statusCode);
+        else res.status(500);
+      }
+      res.redirect('/');
+    });
+    
+  });
+});
 
 // Detail TICKET VIEW ->  IT IS NOT NECESSARY LOGIN TO VISIT THE VIEW
 router.get('/:id', (req, res, next) => {
@@ -64,14 +94,16 @@ router.get('/:id', (req, res, next) => {
       // if(ticket) return ticket;
       
       // NEW
-      console.log(ticket);
+      console.log('get ticket (((((((((((((', ticket);
       if (!ticket) { 
         res.json('No ticket found');
       }
       
-      if (ticket.image !== 'nofile') {
-        const image = `${process.env.API}/uploads/${ticket.image}`;
-        const newTicket = Object.assign(ticket, { image });
+      if (ticket.image.filename !== 'nofile') {
+        console.log('iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii', process.env.API_UPLOADS)
+        const imageUrl = `${process.env.API_UPLOADS}${ticket.imageUrl}`;
+        const newTicket = Object.assign(ticket, { imageUrl });
+        console.log('ner', newTicket);
         res.json(newTicket);
 
       } else {
@@ -148,6 +180,7 @@ router.get('/comment/:id', (req, res, next) => {
     .catch( err => console.log(err));
 });
 
+// REMOVE WHEN ADD QUILL EDITOR IMAGE
 var storage	=	multer.diskStorage({
   destination: function (req, file, callback) {
     callback(null, './public/uploads');

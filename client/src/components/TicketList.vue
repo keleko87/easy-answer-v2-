@@ -28,7 +28,8 @@
                   </router-link>
                 </h5>
                 <div class="content card-text">
-                  {{ ticket.content }}
+                  <!-- {{ ticket.content }} -->
+                  <!-- <p v-html="ticket.content"></p> -->
                 </div>
               </div>
 

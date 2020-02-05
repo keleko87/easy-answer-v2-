@@ -1,11 +1,20 @@
 import Vue from 'vue';
 import { TicketsService, CommentService } from '../../common/api.service';
-import { SAVE_TICKET, SAVE_COMMENT, GET_TICKET, GET_TICKET_COMMENTS } from '../actions.type';
-import { SET_TICKET, SET_COMMENT_IN_TICKET, SET_COMMENTS } from '../mutations.type';
+import {
+  SAVE_TICKET,
+  SAVE_COMMENT,
+  GET_TICKET,
+  GET_TICKET_COMMENTS
+} from '../actions.type';
+import {
+  SET_TICKET,
+  SET_COMMENT_IN_TICKET,
+  SET_COMMENTS
+} from '../mutations.type';
 
 const state = {
   data: {},
-  comments: [],
+  comments: []
 };
 
 const getters = {
@@ -25,7 +34,7 @@ const actions = {
     context.dispatch(GET_TICKET_COMMENTS, id);
   },
 
-  async [GET_TICKET_COMMENTS] (context, ticketId) {
+  async [GET_TICKET_COMMENTS](context, ticketId) {
     const { data } = await CommentService.getTicketComments(ticketId);
     context.commit(SET_COMMENTS, data);
     return data;
@@ -35,15 +44,13 @@ const actions = {
     try {
       await TicketsService.saveTicket(form);
       context.commit(SET_TICKET, form);
-    } 
-    catch(err) {
+    } catch (err) {
       window.console.log('error', err);
       return err;
     }
   },
 
-  async [SAVE_COMMENT](context, { form, id }) { 
-
+  async [SAVE_COMMENT](context, { form, id }) {
     const { data } = await CommentService.saveComment(form, id);
 
     if (data) {
@@ -55,14 +62,14 @@ const actions = {
 
 const mutations = {
   [SET_TICKET](state, newTicket) {
-    state.data = { ...newTicket };  // Equivalent to Object.assign({}, newTicket);
+    state.data = { ...newTicket }; // Equivalent to Object.assign({}, newTicket);
   },
   [SET_COMMENTS](state, comments) {
-    state.comments = [ ...comments ];
+    state.comments = [...comments];
   },
-  [SET_COMMENT_IN_TICKET] (state, comment) {
-    // state.comments.push(comment); // NO REACTIVE 
-    Vue.set(state.comments, state.comments.length, comment);  // REACTIVE!!
+  [SET_COMMENT_IN_TICKET](state, comment) {
+    // state.comments.push(comment); // NO REACTIVE
+    Vue.set(state.comments, state.comments.length, comment); // REACTIVE!!
   }
 };
 

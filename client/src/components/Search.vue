@@ -22,7 +22,6 @@ export default {
     search(event) {
       this.serviceToGet(event)
         .then(data => {
-          console.log(data);
           this.responseEvent(data);
         })
         .catch(err => console.error(err));

@@ -9,11 +9,14 @@
               <div class="card-message">
                 <h5 class="card-title">{{ getTicket.title }}</h5>
                 <div class="content expanded card-text">
-                  <p v-html="getTicket.content"></p>
+                  <div v-html="getTicket.content"></div>
                 </div>
-                <div class="ticket-image" v-if="getTicket.image !== 'nofile'">
+                <div
+                  class="ticket-image"
+                  v-if="getTicket.image.filename !== 'nofile'"
+                >
                   <img
-                    :src="getTicket.image"
+                    :src="getTicket.imageUrl"
                     alt="ticket image"
                     class="card-image image-responsive"
                   />
@@ -75,6 +78,8 @@
           <div class="card-body">
             <div class="d-flex justify-content-between ">
               <div class="card-message">
+                <p>{{ comment.content }}</p>
+
                 <div v-if="comment.image !== 'nofile'" class="ticket-image">
                   <img
                     :src="comment.image"
@@ -181,10 +186,20 @@ export default {
   mounted() {
     this.$nextTick(() => {
       // this.getTicketById();
+      this.contentPhotoReplace();
     });
   },
 
   methods: {
+    contentPhotoReplace() {
+      console.log('contentPhotoReplace', this.$store.state.ticket.data.image.filename);
+      const ticket = this.$store.state.ticket.data;
+      this.$store.state.ticket.data.content = ticket.content.replace(
+        `blob:http://localhost:8080/95b649e4-4362-43f5-a362-b03dd07f7647`,
+        ticket.imageUrl
+      );
+    },
+
     getTicketById() {
       const { id } = this.$route.params;
       this.$store.dispatch(GET_TICKET, id);
@@ -199,6 +214,10 @@ export default {
   height: auto;
   overflow: visible;
   text-overflow: unset;
+}
+
+.content.expanded >>> img {
+  width: 100%;
 }
 
 .ticket-comments.votes {
@@ -222,5 +241,17 @@ export default {
 
 .ticket-image .comment-image {
   width: 75%;
+}
+
+.card .card-body .actions {
+  margin-top: 3rem;
+}
+
+.card-link {
+  font-size: 14px;
+  color: #fff;
+  background-color: #593196;
+  padding: 5px 10px;
+  border-radius: 1px;
 }
 </style>

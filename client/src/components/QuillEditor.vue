@@ -134,24 +134,27 @@
         <button class="menubar__button" @click="commands.redo">
           <!-- <icon name="redo" /> -->
           <b-icon-arrow-clockwise></b-icon-arrow-clockwise>
-          <!-- <b-icon-reply-fill></b-icon-reply-fill> -->
         </button>
 
         <button
           class="menubar__button"
           @click="showImagePrompt(commands.image)"
         >
-          <b-icon-image></b-icon-image>
+          <b-icon-image-fill></b-icon-image-fill>
           <!-- <icon name="image" /> -->
         </button>
 
-        <button
-          class="menubar__button"
-          @click="showImageUploaded(commands.image)"
-        >
+        <button class="menubar__button" @click="chooseFiles()">
           <b-icon-image></b-icon-image>
           <!-- <icon name="image" /> -->
         </button>
+        <input
+          id="photo"
+          type="file"
+          ref="photo"
+          name="photo"
+          @change="selectFile(commands.image)"
+        />
       </div>
     </editor-menu-bar>
 
@@ -191,12 +194,14 @@ export default {
   },
 
   props: {
-    imageUrl: String,
+    image: File,
     content: String
   },
 
   data() {
     return {
+      file: File,
+      photoUrl: '',
       editor: null,
       editorChange: false
     };
@@ -205,9 +210,8 @@ export default {
   mounted() {
     this.editor = new Editor({
       onUpdate: ({ getHTML }) => {
-        console.log(getHTML(), 'onUpdate');
         this.editorChange = true;
-        this.$emit('input', getHTML());
+        this.$emit('input', { getHTML: getHTML(), file: this.file });
       },
       extensions: [
         new Blockquote(),
@@ -238,10 +242,7 @@ export default {
 
   watch: {
     content(value) {
-      console.log('editor content', this.editor);
-
       if (this.editor && !this.editorChange) {
-        console.log('valueeee', value);
         this.editor.setContent(value, true);
         this.$emit('input', value);
       }
@@ -251,8 +252,19 @@ export default {
   },
 
   methods: {
+    selectFile(commandImage) {
+      this.file = this.$refs.photo.files[0];
+      this.photoUrl = URL.createObjectURL(this.file);
+      this.file['photoUrl'] = this.photoUrl;
+      // this.$emit('select', this.file);
+      this.showImageUploaded(commandImage);
+    },
+
+    chooseFiles() {
+      window.document.getElementById('photo').click();
+    },
+
     showImagePrompt(command) {
-      console.log('command', command.image);
       const src = prompt('Enter the url of your image here');
       if (src !== null) {
         command({ src });
@@ -260,8 +272,7 @@ export default {
     },
 
     showImageUploaded(command) {
-      debugger;
-      const src = this.imageUrl;
+      const src = this.photoUrl;
       command({ src });
     }
   },
@@ -273,6 +284,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+#photo {
+  display: none;
+}
+
 .menubar {
   &__button {
     font-size: 23px;

@@ -30,11 +30,7 @@
                 >
                 </textarea> -->
 
-                <quill-editor
-                  :content="$v.form.content.$model"
-                  :imageUrl="photoUrl"
-                  @input="onInput($event)"
-                ></quill-editor>
+                <quill-editor @input="onInput($event)"></quill-editor>
               </div>
               <div class="form-group">
                 <label for="tags">Tags</label>
@@ -59,8 +55,19 @@
                   name="photo"
                   @change="onSelect"
                 />
-                <!-- <file-upload /> -->
               </div>
+
+              <div class="form-group">
+                <input
+                  type="text"
+                  id="imageUrl"
+                  ref="imageUrl"
+                  name="imageUrl"
+                  readonly
+                  v-model.trim="$v.form.imageUrl.$model"
+                />
+              </div>
+
               <div id="preview">
                 <img v-if="photoUrl" :src="photoUrl" />
               </div>
@@ -96,6 +103,7 @@ export default {
         title: '',
         content: '',
         tags: [''],
+        imageUrl: '',
         photo: {}
       },
       photoUrl: ''
@@ -107,11 +115,13 @@ export default {
       const photo = this.$refs.photo.files[0];
       this.photoUrl = URL.createObjectURL(photo);
       this.form.photo = photo;
+      this.$v.form.imageUrl = this.photoUrl;
     },
 
     onInput(ev) {
-      console.log('on input', ev);
-      this.form.content = ev;
+      this.form.content = ev.getHTML;
+      this.form.photo = ev.file;
+      this.form.imageUrl = ev.file.photoUrl;
     },
 
     onSubmit() {
@@ -120,6 +130,7 @@ export default {
       formData.append('title', this.form.title);
       formData.append('content', this.form.content);
       formData.append('tags', this.form.tags);
+      formData.append('imageUrl', this.form.imageUrl);
 
       if (this.form.photo) {
         formData.append('photo', this.form.photo);
@@ -141,6 +152,7 @@ export default {
         minLength: minLength(10),
         maxLength: maxLength(500)
       },
+      imageUrl: {},
       tags: {
         required
       },
