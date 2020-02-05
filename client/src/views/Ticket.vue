@@ -6,7 +6,7 @@
           <h2>Create New ticket</h2>
 
           <div class="well">
-            <form @submit.prevent="onSubmit" enctype="multipart/form-data">
+            <div>
               <div class="form-group control-label">
                 <label for="title">Title</label>
                 <input
@@ -20,7 +20,7 @@
               </div>
               <div class="form-group">
                 <label for="content">Content</label>
-                <textarea
+                <!-- <textarea
                   v-model.trim="$v.form.content.$model"
                   class="form-control"
                   rows="5"
@@ -28,9 +28,13 @@
                   placeholder="Write your issue"
                   name="content"
                 >
-                </textarea>
+                </textarea> -->
 
-                {{ $v.form.content.$model }}
+                <quill-editor
+                  :content="$v.form.content.$model"
+                  :imageUrl="photoUrl"
+                  @input="onInput($event)"
+                ></quill-editor>
               </div>
               <div class="form-group">
                 <label for="tags">Tags</label>
@@ -60,14 +64,14 @@
               <div id="preview">
                 <img v-if="photoUrl" :src="photoUrl" />
               </div>
-              <button type="submit" class="btn btn-success">Send Ticket</button>
-            </form>
-
-            <quill-editor
-              :content="$v.form.content.$model"
-              :imageUrl="photoUrl"
-            ></quill-editor>
-
+              <button
+                type="button"
+                @click.prevent="onSubmit"
+                class="btn btn-success"
+              >
+                Send Ticket
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -103,6 +107,11 @@ export default {
       const photo = this.$refs.photo.files[0];
       this.photoUrl = URL.createObjectURL(photo);
       this.form.photo = photo;
+    },
+
+    onInput(ev) {
+      console.log('on input', ev);
+      this.form.content = ev;
     },
 
     onSubmit() {

@@ -1,6 +1,5 @@
 <template>
   <div class="editor">
-    content: {{ content }}
     <editor-menu-bar :editor="editor" v-slot="{ commands, isActive }">
       <div class="menubar">
         <button
@@ -48,6 +47,15 @@
           <b-icon-code></b-icon-code>
 
           <!-- <icon name="code" /> -->
+        </button>
+
+        <button
+          class="menubar__button"
+          :class="{ 'is-active': isActive.code_block() }"
+          @click="commands.code_block"
+        >
+          <!-- <icon name="code" /> -->
+          <b-icon-code-slash></b-icon-code-slash>
         </button>
 
         <button
@@ -108,15 +116,6 @@
         >
           <!-- <icon name="quote" /> -->
           <b-icon-blockquote-left></b-icon-blockquote-left>
-        </button>
-
-        <button
-          class="menubar__button"
-          :class="{ 'is-active': isActive.code_block() }"
-          @click="commands.code_block"
-        >
-          <!-- <icon name="code" /> -->
-          <b-icon-code-slash></b-icon-code-slash>
         </button>
 
         <button
@@ -198,47 +197,56 @@ export default {
 
   data() {
     return {
-      editor: new Editor({
-        extensions: [
-          new Blockquote(),
-          new BulletList(),
-          new CodeBlock(),
-          new HardBreak(),
-          new Heading({ levels: [1, 2, 3] }),
-          new HorizontalRule(),
-          new Image(),
-          new ListItem(),
-          new OrderedList(),
-          new TodoItem(),
-          new TodoList(),
-          new Link(),
-          new Bold(),
-          new Code(),
-          new Italic(),
-          new Strike(),
-          new Underline(),
-          new History()
-        ],
-        content: `
-          <h2>
-           Hey write here!
-          </h2>`,
-        onUpdate: ({ getHTML }) => {
-          console.log({ getHTML }, 'onUpdate', this.content);
-          this.$emit('input', getHTML());
-        }
-      })
+      editor: null,
+      editorChange: false
     };
+  },
+
+  mounted() {
+    this.editor = new Editor({
+      onUpdate: ({ getHTML }) => {
+        console.log(getHTML(), 'onUpdate');
+        this.editorChange = true;
+        this.$emit('input', getHTML());
+      },
+      extensions: [
+        new Blockquote(),
+        new BulletList(),
+        new CodeBlock(),
+        new HardBreak(),
+        new Heading({ levels: [1, 2, 3] }),
+        new HorizontalRule(),
+        new Image(),
+        new ListItem(),
+        new OrderedList(),
+        new TodoItem(),
+        new TodoList(),
+        new Link(),
+        new Bold(),
+        new Code(),
+        new Italic(),
+        new Strike(),
+        new Underline(),
+        new History()
+      ],
+      content: `
+      <p>
+        Hey write here!
+      </p>`
+    });
   },
 
   watch: {
     content(value) {
       console.log('editor content', this.editor);
-      if (value) {
+
+      if (this.editor && !this.editorChange) {
         console.log('valueeee', value);
-        this.editor.setContent(value);
+        this.editor.setContent(value, true);
         this.$emit('input', value);
       }
+
+      this.editorChange = false;
     }
   },
 
@@ -257,8 +265,9 @@ export default {
       command({ src });
     }
   },
+
   beforeDestroy() {
-    this.editor.destroy();
+    if (this.editor) this.editor.destroy();
   }
 };
 </script>

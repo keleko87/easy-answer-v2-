@@ -6,10 +6,10 @@
         <div class="card">
           <div class="card-body">
             <div class="d-flex justify-content-between ">
-              <div class="message">
+              <div class="card-message">
                 <h5 class="card-title">{{ getTicket.title }}</h5>
                 <div class="content expanded card-text">
-                  {{ getTicket.content }}
+                  <p v-html="getTicket.content"></p>
                 </div>
                 <div class="ticket-image" v-if="getTicket.image !== 'nofile'">
                   <img
@@ -74,8 +74,7 @@
         <div v-for="comment in getComments" :key="comment._id" class="card">
           <div class="card-body">
             <div class="d-flex justify-content-between ">
-              <div class="message">
-                <p>{{ comment.content }}</p>
+              <div class="card-message">
                 <div v-if="comment.image !== 'nofile'" class="ticket-image">
                   <img
                     :src="comment.image"

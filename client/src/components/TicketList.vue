@@ -10,13 +10,20 @@
     <div class="row" v-if="tickets.length">
       <div class="col-md-1"></div>
       <div class="col-md-10">
-        <div class="card" v-for="ticket in tickets" :ticket="ticket" :key="ticket._id">
-        
+        <div
+          class="card"
+          v-for="ticket in tickets"
+          :ticket="ticket"
+          :key="ticket._id"
+        >
           <div class="card-body">
             <div class="d-flex justify-content-between ">
-              <div class="message">
+              <div class="card-message">
                 <h5 class="card-title">
-                  <router-link :to="{ name: 'ticket-detail', params: { id: ticket._id }}" class="">
+                  <router-link
+                    :to="{ name: 'ticket-detail', params: { id: ticket._id } }"
+                    class=""
+                  >
                     {{ ticket.title }}
                   </router-link>
                 </h5>
@@ -26,11 +33,11 @@
               </div>
 
               <div class="ticket-comments pt-1">
-                <div class="comments text-center">23</div> 
+                <div class="comments text-center">23</div>
                 <small>answers</small>
-              </div> 
+              </div>
             </div>
-          
+
             <div class="actions">
               <div>
                 <a href="#" class="card-link">Like</a>
@@ -39,7 +46,7 @@
               </div>
               <div class="tag">
                 <span class="tag-text">
-                  {{ ticket.tags}}
+                  {{ ticket.tags }}
                 </span>
               </div>
             </div>
@@ -47,20 +54,26 @@
 
           <div class="card-footer">
             <div class="row">
-              
               <div class="col-auto">
-                <img :src="ticket.creatorId[0].imgAvatar" class="image-avatar float-left rounded-circle">
+                <img
+                  :src="ticket.creatorId[0].imgAvatar"
+                  class="image-avatar float-left rounded-circle"
+                />
               </div>
 
               <div class="col-auto p-0">
                 <div class="">
-                  <span><b>{{ ticket.creatorId[0].username }} </b>posted a question</span>
+                  <span
+                    ><b>{{ ticket.creatorId[0].username }} </b>posted a
+                    question</span
+                  >
                 </div>
-                <small class="text-muted time">asked:{{ ticket.created_at | date }}</small>
+                <small class="text-muted time"
+                  >asked:{{ ticket.created_at | date }}</small
+                >
               </div>
-
             </div>
-          </div>         
+          </div>
         </div>
       </div>
     </div>
@@ -75,17 +88,16 @@
         ></b-pagination>
       </div>
     </div>
-
   </div>
 </template>
 
 <script>
-import { mapGetters } from "vuex";
-import { GET_TICKETS } from "../store/actions.type";
+import { mapGetters } from 'vuex';
+import { GET_TICKETS } from '../store/actions.type';
 import { BPagination } from 'bootstrap-vue';
 
 export default {
-  name: "ticket-list",
+  name: 'ticket-list',
 
   components: {
     BPagination
@@ -140,7 +152,3 @@ export default {
   }
 };
 </script>
-
-<style scoped>
-
-</style>
