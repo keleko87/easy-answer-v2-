@@ -9,9 +9,15 @@
               <div class="card-message">
                 <h5 class="card-title">{{ getTicket.title }}</h5>
                 <div class="content expanded card-text">
-                  <div v-html="getTicket.content"></div>
+                  <!-- <div v-html="getTicket.content"></div> -->
+
+                  <quill-editor
+                    :content="getTicket.content"
+                    :editable="false"
+                    :menuBarHidden="true"
+                  ></quill-editor>
                 </div>
-                <div
+                <!-- <div
                   class="ticket-image"
                   v-if="getTicket.image.filename !== 'nofile'"
                 >
@@ -20,7 +26,7 @@
                     alt="ticket image"
                     class="card-image image-responsive"
                   />
-                </div>
+                </div> -->
               </div>
 
               <div class="ticket-comments pt-1">
@@ -146,22 +152,23 @@
 </template>
 
 <script>
-import { GET_TICKET } from '../store/actions.type';
+import { GET_TICKET, REPLACE_IMAGE_URL } from '../store/actions.type';
 import { mapGetters } from 'vuex';
 import { BIconChevronDown, BIconChevronUp } from 'bootstrap-vue';
 import NewComment from '../components/NewComment';
+import QuillEditor from '../components/QuillEditor';
 import store from '../store';
 
 export default {
   name: 'ticketDetail',
   data() {
     return {
-      commentsArr: [],
       uploadsURL: `${process.env.VUE_APP_API}/uploads/`
     };
   },
 
   components: {
+    QuillEditor,
     NewComment,
     BIconChevronDown,
     BIconChevronUp
@@ -183,27 +190,18 @@ export default {
     });
   },
 
-  mounted() {
-    this.$nextTick(() => {
-      // this.getTicketById();
-      this.contentPhotoReplace();
-    });
+  created() {
+    this.contentPhotoReplace();
   },
 
   methods: {
     contentPhotoReplace() {
-      console.log('contentPhotoReplace', this.$store.state.ticket.data.image.filename);
-      const ticket = this.$store.state.ticket.data;
-      this.$store.state.ticket.data.content = ticket.content.replace(
-        `blob:http://localhost:8080/95b649e4-4362-43f5-a362-b03dd07f7647`,
-        ticket.imageUrl
-      );
+      this.$store.dispatch(REPLACE_IMAGE_URL, { ticket: this.getTicket });
     },
 
     getTicketById() {
       const { id } = this.$route.params;
       this.$store.dispatch(GET_TICKET, id);
-      // this.$store.dispatch(GET_TICKET_COMMENTS, id);
     }
   }
 };
@@ -216,6 +214,7 @@ export default {
   text-overflow: unset;
 }
 
+/* >>> To add styles in <img> tag into v-html content */
 .content.expanded >>> img {
   width: 100%;
 }

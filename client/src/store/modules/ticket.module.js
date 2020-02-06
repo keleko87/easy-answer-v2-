@@ -4,12 +4,14 @@ import {
   SAVE_TICKET,
   SAVE_COMMENT,
   GET_TICKET,
-  GET_TICKET_COMMENTS
+  GET_TICKET_COMMENTS,
+  REPLACE_IMAGE_URL
 } from '../actions.type';
 import {
   SET_TICKET,
   SET_COMMENT_IN_TICKET,
-  SET_COMMENTS
+  SET_COMMENTS,
+  SET_IMAGE_URL
 } from '../mutations.type';
 
 const state = {
@@ -57,6 +59,10 @@ const actions = {
       context.commit(SET_COMMENT_IN_TICKET, data);
       context.dispatch(GET_TICKET_COMMENTS, id);
     }
+  },
+
+  [REPLACE_IMAGE_URL](context, { ticket }) {
+    context.commit(SET_IMAGE_URL, ticket);
   }
 };
 
@@ -70,6 +76,12 @@ const mutations = {
   [SET_COMMENT_IN_TICKET](state, comment) {
     // state.comments.push(comment); // NO REACTIVE
     Vue.set(state.comments, state.comments.length, comment); // REACTIVE!!
+  },
+  [SET_IMAGE_URL](state, ticket) {
+    state.data.content = ticket.content.replace(
+      `blob:${process.env.VUE_APP_WEB}${ticket.image.filename}`,
+      ticket.imageUrl
+    );
   }
 };
 

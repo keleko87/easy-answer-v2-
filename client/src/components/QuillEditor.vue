@@ -1,7 +1,7 @@
 <template>
-  <div class="editor">
+  <div class="editor" :class="{ 'border-none': menuBarHidden }">
     <editor-menu-bar :editor="editor" v-slot="{ commands, isActive }">
-      <div class="menubar">
+      <div class="menubar" :class="{ 'is-hidden': menuBarHidden }">
         <button
           class="menubar__button"
           :class="{ 'is-active': isActive.bold() }"
@@ -195,7 +195,15 @@ export default {
 
   props: {
     image: File,
-    content: String
+    content: String,
+    editable: {
+      type: Boolean,
+      default: true
+    },
+    menuBarHidden: {
+      type: Boolean,
+      default: false
+    }
   },
 
   data() {
@@ -209,6 +217,7 @@ export default {
 
   mounted() {
     this.editor = new Editor({
+      editable: this.editable,
       onUpdate: ({ getHTML }) => {
         this.editorChange = true;
         this.$emit('input', { getHTML: getHTML(), file: this.file });
@@ -233,10 +242,7 @@ export default {
         new Underline(),
         new History()
       ],
-      content: `
-      <p>
-        Hey write here!
-      </p>`
+      content: this.content
     });
   },
 
@@ -284,6 +290,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.editor.border-none {
+  border: none;
+}
+
 #photo {
   display: none;
 }

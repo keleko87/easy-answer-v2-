@@ -8,6 +8,8 @@ export const SET_TICKETS_COUNT = 'SET_TICKETS_COUNT';
 export const SET_COMMENT_IN_TICKET = 'SET_COMMENT_IN_TICKET';
 export const SET_COMMENTS = 'SET_COMMENTS';
 
+export const SET_IMAGE_URL = 'SET_IMAGE_URL';
+
 export const SET_AUTH = 'SET_AUTH';
 export const PURGE_AUTH = 'PURGE_AUTH';
 export const SET_ERROR = 'SET_ERROR';
