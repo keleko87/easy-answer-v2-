@@ -58,7 +58,7 @@ describe('Ticket', () => {
     // wrapper.destroy();
   });
 
-  xit('is created', () => {     
+  xit('is created', () => {
     const defaultData = Ticket.data();
     expect(wrapper.isVueInstance).toBeTruthy();
     expect(defaultData.form).toBeDefined();
