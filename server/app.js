@@ -99,9 +99,13 @@ app.use('/', index);
 app.use('/ticket', ticket);
 app.use('/auth', auth);
 
-app.use((req, res, next) => {
-  res.sendfile(__dirname + '/public/index.html');
-});
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(__dirname + '/public/'));
+
+  app.use((req, res, next) => {
+    res.sendfile(__dirname + '/public/index.html');
+  });
+}
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
