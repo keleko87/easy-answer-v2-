@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "/precache-manifest.2f8bc19c2ae3b8f2b8e0a503ad845990.js"
+  "/precache-manifest.1951ae2e7edff1614f07662523d88e37.js"
 );
 
 workbox.core.setCacheNameDetails({prefix: "easy-answer"});
