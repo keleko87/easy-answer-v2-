@@ -79,7 +79,7 @@
       </div>
     </div>
 
-    <div class="row">
+    <div class="row" v-if="ticketsCount > 0">
       <div class="mx-auto">
         <b-pagination
           v-model="pagination.currentPage"

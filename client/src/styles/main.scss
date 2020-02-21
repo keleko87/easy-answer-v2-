@@ -145,3 +145,10 @@ h3 {
 .ticket-comments small {
   vertical-align: super;
 }
+
+.border--bottom {
+  padding: 0.5rem 0 1.25rem 0;
+  border-bottom: 1px solid #dddddd;
+  margin-right: 2rem;;
+  border-bottom: 1px solid $color-grey;
+}

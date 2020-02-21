@@ -194,8 +194,14 @@ export default {
   },
 
   props: {
-    image: File,
-    content: String,
+    image: {
+      type: Object,
+      default: () => {}
+    },
+    content: {
+      type: String,
+      default: ''
+    },
     editable: {
       type: Boolean,
       default: true

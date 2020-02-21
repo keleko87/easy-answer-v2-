@@ -7,7 +7,7 @@
           <div class="card-body">
             <div class="d-flex justify-content-between ">
               <div class="card-message">
-                <h5 class="card-title">{{ getTicket.title }}</h5>
+                <h5 class="card-title border--bottom">{{ getTicket.title }}</h5>
                 <div class="content expanded card-text">
                   <!-- <div v-html="getTicket.content"></div> -->
 
@@ -17,16 +17,17 @@
                     :menuBarHidden="true"
                   ></quill-editor>
                 </div>
-                <!-- <div
-                  class="ticket-image"
-                  v-if="getTicket.image.filename !== 'nofile'"
-                >
-                  <img
-                    :src="getTicket.imageUrl"
-                    alt="ticket image"
-                    class="card-image image-responsive"
-                  />
-                </div> -->
+
+                <div class="row" v-if="getTicket.image.filename !== 'nofile'">
+                  <div class="ticket-file-attached col-6 p-2">
+                    <p>Image attached</p>
+                    <img
+                      :src="getTicket.imageUrl"
+                      alt="ticket image"
+                      class="card-image image-responsive"
+                    />
+                  </div>
+                </div>
               </div>
 
               <div class="ticket-comments pt-1">
@@ -207,7 +208,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .content.expanded {
   height: auto;
   overflow: visible;
@@ -252,5 +253,12 @@ export default {
   background-color: #593196;
   padding: 5px 10px;
   border-radius: 1px;
+}
+
+.ticket-file-attached {
+  // border: 1px solid #ccc;
+  img {
+    width: 100%;
+  }
 }
 </style>

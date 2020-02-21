@@ -67,7 +67,8 @@ router.post('/new', (req, res) => {
       tags,
       image,
       imageUrl,
-      creatorId: '5e26f691358276336845a086' // IMPORTANT USER ID LOGGED IN
+      // creatorId: '5e26f691358276336845a086' // IMPORTANT USER ID LOGGED IN
+      creatorId: '5e201a7ceac0514eb4e3f01e'
     });
 
     console.log('TICKET:::::::', ticket);
@@ -94,13 +95,11 @@ router.get('/:id', (req, res, next) => {
       // if(ticket) return ticket;
       
       // NEW
-      console.log('get ticket (((((((((((((', ticket);
       if (!ticket) { 
         res.json('No ticket found');
       }
       
       if (ticket.image.filename !== 'nofile') {
-        console.log('iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii', process.env.API_UPLOADS)
         const imageUrl = `${process.env.API_UPLOADS}${ticket.imageUrl}`;
         const newTicket = Object.assign(ticket, { imageUrl });
         console.log('ner', newTicket);
@@ -211,7 +210,7 @@ router.post('/comment/:id', (req, res) => {
       content: req.body.content,
       image: image,
       ticket_rel: req.params.id,
-      creatorCommentId: '5e26f691358276336845a086', // req.user._id,
+      creatorCommentId: '5e201a7ceac0514eb4e3f01e', // '5e26f691358276336845a086', // req.user._id,
       solved: false,
       votes: []
     });
@@ -226,29 +225,5 @@ router.post('/comment/:id', (req, res) => {
 	});
 });
 
-
-//Add new comment in ticket
-// router.post('/comment/:id', [upload.single('photo-comment'), ensureLoggedIn('/auth/login')], (req, res, next) => {
-//
-//   console.log(res);
-//   console.log("NEW RESSSSSSSS!!!!!!!!!!!!");
-// console.log(req.file);
-//   let image;
-//   if (req.file) image = req.file.filename;
-//   else image = 'nofile';
-//
-//   let comment = new Comment({
-//     content: req.body.content,
-//     image: image,
-//     ticket_rel: req.params.id,
-//     creatorCommentId: req.user._id,
-//     solved: false,
-//     votes: []
-//   });
-//   console.log('NEW COMMENT', comment);
-//   comment.save((err, obj) => {
-//     res.redirect(`/ticket/${obj.ticket_rel}`);
-//   });
-// });
 
 module.exports = router;

@@ -41,12 +41,18 @@
                   placeholder="Choose your tag"
                   name="tags"
                 >
-                  <option>html</option>
-                  <option>css</option>
-                  <option>js</option>
-                  <option>node</option>
+                  <option v-for="tag in tags" :key="tag">
+                    {{ tag }}
+                  </option>
                 </select>
               </div>
+
+              <div v-if="photoUrl" class="preview-container col-6 p-2 mb-2">
+                <div class="preview mx-auto">
+                  <img :src="photoUrl" />
+                </div>
+              </div>
+
               <div class="form-group">
                 <input
                   id="photo"
@@ -57,7 +63,7 @@
                 />
               </div>
 
-              <div class="form-group">
+              <!-- <div class="form-group">
                 <input
                   type="text"
                   id="imageUrl"
@@ -66,11 +72,8 @@
                   readonly
                   v-model.trim="$v.form.imageUrl.$model"
                 />
-              </div>
+              </div> -->
 
-              <div id="preview">
-                <img v-if="photoUrl" :src="photoUrl" />
-              </div>
               <button
                 type="button"
                 @click.prevent="onSubmit"
@@ -87,6 +90,7 @@
 </template>
 
 <script>
+import { TAGS } from '../common/constants';
 import { required, minLength, maxLength } from 'vuelidate/lib/validators';
 import { SAVE_TICKET } from '../store/actions.type';
 import QuillEditor from '../components/QuillEditor';
@@ -106,7 +110,8 @@ export default {
         imageUrl: '',
         photo: {}
       },
-      photoUrl: ''
+      photoUrl: '',
+      tags: TAGS
     };
   },
 
@@ -115,7 +120,7 @@ export default {
       const photo = this.$refs.photo.files[0];
       this.photoUrl = URL.createObjectURL(photo);
       this.form.photo = photo;
-      this.$v.form.imageUrl = this.photoUrl;
+      this.$v.form.imageUrl.$model = this.photoUrl;
     },
 
     onInput(ev) {
@@ -161,3 +166,16 @@ export default {
   }
 };
 </script>
+
+<style lang="scss" scoped>
+.preview-container {
+  border: 1px solid #ccc;
+
+  .preview {
+
+    img {
+      width: 100%;
+    }
+  }
+}
+</style>
