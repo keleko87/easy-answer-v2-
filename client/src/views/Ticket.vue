@@ -47,7 +47,7 @@
                 </select>
               </div>
 
-              <div v-if="photoUrl" class="preview-container col-6 p-2 mb-2">
+              <!-- <div v-if="photoUrl" class="preview-container col-6 p-2 mb-2">
                 <div class="preview mx-auto">
                   <img :src="photoUrl" />
                 </div>
@@ -61,7 +61,7 @@
                   name="photo"
                   @change="onSelect"
                 />
-              </div>
+              </div> -->
 
               <!-- <div class="form-group">
                 <input

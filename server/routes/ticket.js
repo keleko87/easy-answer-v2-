@@ -13,7 +13,7 @@ router.get('/list', (req, res) => {
   .exec()
   .then((data) => {
     const tickets = data.map((ticket) => {
-      const image = `${process.env.API_UPLOADS}${ticket.image}`;
+      const image = `${process.env.API}/uploads/${ticket.image}`;
       const newTicket = Object.assign(ticket, { image });
       
       return newTicket;
@@ -100,7 +100,7 @@ router.get('/:id', (req, res, next) => {
       }
       
       if (ticket.image.filename !== 'nofile') {
-        const imageUrl = `${process.env.API_UPLOADS}${ticket.imageUrl}`;
+        const imageUrl = `${process.env.API}/uploads/${ticket.imageUrl}`;
         const newTicket = Object.assign(ticket, { imageUrl });
         console.log('ner', newTicket);
         res.json(newTicket);

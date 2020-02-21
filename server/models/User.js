@@ -8,6 +8,7 @@ const UserSchema = mongoose.Schema({
   teamImage: String,
   username: String,
   email: String,
+  password: String,
   imgAvatar: {type: String, default:"https://placeholdit.imgix.net/~text?txtsize=33&txt=250%C3%97250&w=250&h=250" }
 }, {
   timestamps: {

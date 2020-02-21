@@ -60,14 +60,30 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// app.use(session({
+//   secret: 'ironfundingdev',
+//   resave: false,
+//   saveUninitialized: true,
+//   store: new MongoStore( { mongooseConnection: mongoose.connection })
+// }));
+
+// SLACK LOGIN
+// require('./passport/slack');
+// app.use(passport.initialize());
+// app.use(passport.session());
+
+
+// LOCAL LOGIN
 app.use(session({
-  secret: 'ironfundingdev',
-  resave: false,
+  secret: 'vue Secret oh yeah',
+  resave: true,
   saveUninitialized: true,
-  store: new MongoStore( { mongooseConnection: mongoose.connection })
+  cookie : { httpOnly: true, maxAge: 2419200000 }
 }));
 
-require('./passport/slack');
+const passportLocalStrategy = require('./passport/local');
+passportLocalStrategy(passport);
+
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -78,7 +94,7 @@ app.use((req, res, next)=> {
 
 const index = require('./routes/index');
 const ticket = require('./routes/ticket');
-const auth = require('./routes/auth');
+const auth = require('./routes/auth/');
 app.use('/', index);
 app.use('/ticket', ticket);
 app.use('/auth', auth);

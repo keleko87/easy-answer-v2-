@@ -18,7 +18,8 @@
                   ></quill-editor>
                 </div>
 
-                <div class="row" v-if="getTicket.image.filename !== 'nofile'">
+                <!-- Uncomment when uses upload file outside quill-editor -->
+                <!-- <div class="row" v-if="getTicket.image.filename !== 'nofile'">
                   <div class="ticket-file-attached col-6 p-2">
                     <p>Image attached</p>
                     <img
@@ -27,7 +28,7 @@
                       class="card-image image-responsive"
                     />
                   </div>
-                </div>
+                </div> -->
               </div>
 
               <div class="ticket-comments pt-1">
@@ -162,11 +163,6 @@ import store from '../store';
 
 export default {
   name: 'ticketDetail',
-  data() {
-    return {
-      uploadsURL: `${process.env.VUE_APP_API}/uploads/`
-    };
-  },
 
   components: {
     QuillEditor,
